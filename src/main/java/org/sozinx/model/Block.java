@@ -4,15 +4,15 @@ public class Block {
     private long id;
     private User teacher;
     private User student;
-    private String dateOfBlock;
-    private  String dateOfUnblock;
+    private String block;
+    private String unblock;
 
     public Block(long id, User teacher, User student, String dateOfBlock, String dateOfUnblock) {
         this.id = id;
         this.teacher = teacher;
         this.student = student;
-        this.dateOfBlock = dateOfBlock;
-        this.dateOfUnblock = dateOfUnblock;
+        this.block = dateOfBlock;
+        this.unblock = dateOfUnblock;
     }
 
     public long getId() {
@@ -39,19 +39,20 @@ public class Block {
         this.student = student;
     }
 
-    public String getDateOfBlock() {
-        return dateOfBlock;
+    public String getBlock() {
+        return block;
     }
 
-    public void setDateOfBlock(String dateOfBlock) {
-        this.dateOfBlock = dateOfBlock;
+    public void setBlock(String block) {
+        this.block = block;
     }
 
-    public String getDateOfUnblock() {
-        return dateOfUnblock;
+    public String getUnblock() {
+        return unblock;
     }
 
-    public void setDateOfUnblock(String dateOfUnblock) {
-        this.dateOfUnblock = dateOfUnblock;
+    public void setUnblock(String unblock) {
+        this.unblock = unblock;
     }
+
 }
