@@ -7,16 +7,18 @@ public class Test {
     private  String created;
     private int isClose;
     private int time;
+    private int finished;
     private User owner;
     private Level level;
 
-    public Test(long id, String name, String subject, String created, int isClose, int time, User owner, Level level) {
+    public Test(long id, String name, String subject, String created, int isClose, int time, int finished, User owner, Level level) {
         this.id = id;
         this.name = name;
         this.subject = subject;
         this.created = created;
         this.isClose = isClose;
         this.time = time;
+        this.finished = finished;
         this.owner = owner;
         this.level = level;
     }
@@ -67,6 +69,14 @@ public class Test {
 
     public void setTime(int time) {
         this.time = time;
+    }
+
+    public int getFinished() {
+        return finished;
+    }
+
+    public void setFinished(int finished) {
+        this.finished = finished;
     }
 
     public User getOwner() {
