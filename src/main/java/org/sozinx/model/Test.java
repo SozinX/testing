@@ -7,11 +7,11 @@ public class Test {
     private  String created;
     private int isClose;
     private int time;
-    private int finished;
+    private long finished;
     private User owner;
     private Level level;
 
-    public Test(long id, String name, String subject, String created, int isClose, int time, int finished, User owner, Level level) {
+    public Test(long id, String name, String subject, String created, int isClose, int time, long finished, User owner, Level level) {
         this.id = id;
         this.name = name;
         this.subject = subject;
@@ -71,7 +71,7 @@ public class Test {
         this.time = time;
     }
 
-    public int getFinished() {
+    public long getFinished() {
         return finished;
     }
 
@@ -93,5 +93,14 @@ public class Test {
 
     public void setLevel(Level level) {
         this.level = level;
+    }
+
+    @Override
+    public String toString() {
+        return "Test{" +
+                ", name='" + name + '\'' +
+                ", subject='" + subject + '\'' +
+                ", level=" + level.getLevel() +
+                '}';
     }
 }

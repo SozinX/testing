@@ -8,8 +8,16 @@ import java.util.List;
 
 public interface ResultDAO {
     List<Result> getResultByUser(User user);
+
     List<Result> getResultByTest(Test test);
+
+    Result getResultByUserAndTest(User user, Test test);
+
     boolean addResult(Result result);
+
     boolean deleteResult(Result result);
-    boolean updateResult(Result result);
+
+    boolean updateResult(Result result, int points);
+
+    boolean deleteResultByUser(User user);
 }

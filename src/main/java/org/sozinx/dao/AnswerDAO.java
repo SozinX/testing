@@ -7,8 +7,14 @@ import java.util.List;
 
 public interface AnswerDAO {
     Answer getAnswerById(long id);
+
     List<Answer> getAnswerByQuestion(Question question);
-    boolean addAnswer(Answer question);
-    boolean updateAnswer(Answer question);
-    boolean deleteAnswer(Answer question);
+
+    boolean addAnswer(Answer answer);
+
+    boolean updateAnswer(Answer answer, String[] params);
+
+    boolean deleteAnswer(Answer answer);
+
+    boolean deleteAnswerByQuestion(Question question);
 }
