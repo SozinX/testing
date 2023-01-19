@@ -1,0 +1,23 @@
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+#status-label{
+background: #897efc;
+color: black;
+font-weight: bold;
+}
+label{
+font-weight: bold;
+}
+#btn{
+background-color:#695ffc;
+border-color: #897efc;}
+#btn:hover{
+background-color:#897efc;
+border-color: #897efc;}
+#error{
+font-weight: bold;}

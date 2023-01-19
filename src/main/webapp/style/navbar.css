@@ -1,0 +1,25 @@
+#navigation{
+background-color: #8500FF;
+position: fixed;
+width: 100%;
+z-index: 999;
+}
+a{
+font-weight: bold;
+color: black;}
+label{
+font-weight: bold;
+}
+#btn{
+background-color:#695ffc;
+border-color: #897efc;
+}
+#btn:hover{
+background-color:#897efc;
+border-color: #897efc;
+}
+h5{
+font-weight: bold;}
+#navbarDropdownMenuLink-4:hover{
+cursor:pointer;
+}

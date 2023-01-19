@@ -1,0 +1,28 @@
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+.h-custom {
+height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+.h-custom {
+height: 100%;
+}
+}
+label{
+font-weight: bold;
+}
+#btn{
+background-color:#695ffc;
+border-color: #897efc;
+}
+#btn:hover{
+background-color:#897efc;
+border-color: #897efc;
+}
+#error{
+font-weight: bold;}
