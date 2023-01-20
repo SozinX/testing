@@ -151,7 +151,6 @@ public class TestDAOImpl implements TestDAO {
             } else if (!Objects.equals(level, "0") && startString.length() < 30) {
                 startString.append("level = ").append(level).append(" ");
             }
-            System.out.println(startString + orderString + "LIMIT " + records + ", 12;");
             return startString + orderString + "LIMIT " + records + ", 12;";
         }
     }

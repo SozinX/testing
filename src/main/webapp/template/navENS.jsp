@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <style><%@include file="../style/navbar.css"%></style>
+
+
 <nav id="navigation" class="navbar navbar-expand-lg navbar-light ">
         <a class="navbar-brand ml-5" href="/"><img src="https://i.ibb.co/qYQpgLz/logo.png" alt="" width="30" height="32" >Quick test</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

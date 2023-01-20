@@ -1,18 +1,14 @@
 <%@include file="../template/base.jsp"%>
-<!DOCTYPE html>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
-<html>
-     <head>
-         <title>Quick Test: Home</title>
-         <style><%@include file="../style/index.css"%></style>
-     </head>
-     <body>
+<style><%@include file="../style/index.css"%></style>
 <%@include file="../template/sidebar.jsp"%>
-
-<form class="page-content" action='get'>
- <div class="container-fluid py-1 px-5">
+ <head>
+     <title>Quick Test: Home</title>
+ </head>
+ <form class="page-content" action='get'>
+ <div class="container-fluid py-2 px-5">
         <div class="row" style="margin-top: 60px">
         <nav class="ml-5" aria-label="...">
           <ul class="pagination">
@@ -50,9 +46,8 @@
                 </c:choose>
           </ul>
         </nav>
-        ${testName}
         <c:forEach items="${requestScope.tests}" var="test">
-            <div id="for-hover" class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div id="for-hover" class="col-xl-3">
                 <a href="#" class="card card-video border-0 bg-transparent mb-4">
                     <img src="https://img.freepik.com/premium-vector/job-exam-test-vector-illustration_138676-243.jpg?w=2000" class="img-fluid" alt="">
                     <div class="card-video-details d-flex mt-2">
@@ -103,6 +98,4 @@
                      </nav>
         </div>
  </div>
-    </form>
-     </body>
-</html>
+</form>
