@@ -64,7 +64,7 @@ select{
     border-radius: 10px;
     height: 40px;
     padding: 5px 10px;
-    /* -webkit-appearance: none; */
+
 }
 
 select:focus{

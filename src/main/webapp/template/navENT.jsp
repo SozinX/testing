@@ -12,13 +12,13 @@
               <a class="nav-link active" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">My tests</a>
+              <a class="nav-link" href="/mytests?page=1">My tests</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">My grades</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" >Create a test</a>
+              <a class="nav-link" href="/create" >Create a test</a>
             </li>
 
           </ul>

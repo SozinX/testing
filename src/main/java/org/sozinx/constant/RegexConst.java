@@ -10,4 +10,5 @@ public class RegexConst {
         Password must contain a length of at least 8 characters and a maximum of 20 characters.
      */
     public static final String PASSWORD = "^(?=.*[0-9])(?=.*[a-zа-щьюяґєії])(?=.*[A-ZА-ЩЬЮЯҐЄІЇ])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,25}$";
+    public static final String TIME = "[0-9]+";
 }

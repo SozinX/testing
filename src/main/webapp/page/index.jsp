@@ -1,7 +1,7 @@
-<%@include file="../template/base.jsp"%>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@include file="../template/base.jsp"%>
 <style><%@include file="../style/index.css"%></style>
 <%@include file="../template/sidebar.jsp"%>
  <head>
@@ -17,7 +17,7 @@
             <fmt:parseNumber var="prev" type="number" value="${requestScope.currentPage}" scope="page"/>
             <c:set var="prev" value="${prev - 1}" scope="page"/>
              <c:choose>
-                <c:when test="${requestScope.currentPage == '1'}">
+                <c:when test="${requestScope.currentPage <= '1'}">
                         <li class="page-item disabled">
                         <a class="page-link" href="#">Previous</a>
                          </li>
@@ -31,7 +31,7 @@
                   </c:otherwise>
                 </c:choose>
                 <c:choose>
-                    <c:when test="${requestScope.currentPage == requestScope.pages}">
+                    <c:when test="${requestScope.currentPage >= requestScope.pages}">
                             <li class="page-item disabled">
                                   <a class="page-link" href="#">Next</a>
                                 </li>
@@ -46,6 +46,14 @@
                 </c:choose>
           </ul>
         </nav>
+        <c:choose>
+        <c:when test="${requestScope.tests == '[]'}">
+            <div class="col-lg-15">
+                    <img src="https://cdn.dribbble.com/users/2382015/screenshots/6065978/media/8b4662f8023e4e2295f865106b5d3aa7.gif"
+                      class="img-fluid" alt="Sample image">
+             </div>
+             </c:when>
+             <c:otherwise>
         <c:forEach items="${requestScope.tests}" var="test">
             <div id="for-hover" class="col-xl-3">
                 <a href="#" class="card card-video border-0 bg-transparent mb-4">
@@ -60,6 +68,8 @@
                 </a>
             </div>
              </c:forEach>
+             </c:otherwise>
+             </c:choose>
              <nav class="ml-5" aria-label="...">
                        <ul class="pagination">
                          <fmt:parseNumber var="next" type="number" value="${requestScope.currentPage}" scope="page"/>
@@ -67,7 +77,7 @@
                          <fmt:parseNumber var="prev" type="number" value="${requestScope.currentPage}" scope="page"/>
                          <c:set var="prev" value="${prev - 1}" scope="page"/>
                           <c:choose>
-                             <c:when test="${requestScope.currentPage == '1'}">
+                             <c:when test="${requestScope.currentPage <= '1'}">
                                      <li class="page-item disabled">
                                      <a class="page-link" href="#">Previous</a>
                                       </li>
@@ -81,7 +91,7 @@
                                </c:otherwise>
                              </c:choose>
                              <c:choose>
-                                 <c:when test="${requestScope.currentPage == requestScope.pages}">
+                                 <c:when test="${requestScope.currentPage >= requestScope.pages}">
                                          <li class="page-item disabled">
                                                <a class="page-link" href="#">Next</a>
                                              </li>

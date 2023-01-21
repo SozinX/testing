@@ -14,7 +14,10 @@ public interface TestDAO {
 
     boolean addPopularity(Test test);
 
-    List<Test> getFilerResult(String name, String subject, String level, String orderColumn, String order, String page);
+    List<Test> getFilterResult(String name, String subject, String level, String orderColumn, String order, String page);
     double getAllFilterTests(String name, String subject, String level, String orderColumn, String order);
+    List<Test> getFilterResultForOwner(String name, String subject, String level, String orderColumn, String order, String owner, String page);
+    double getAllFilterTestsForOwner(String name, String subject, String level, String orderColumn, String owner, String order);
+    Test getTestByNameAndOwner(String name, long id);
 }
 

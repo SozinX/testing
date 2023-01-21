@@ -121,21 +121,20 @@ public class TestDAOImpl implements TestDAO {
     }
 
     private String getQuery(String name, String subject, String level, String orderColumn, String order, String page) {
-        if(page == null){
+        if (page == null) {
             page = "1";
         }
         int records = (Integer.parseInt(page) - 1) * 12;
-        if(name == null && subject == null && orderColumn == null && level == null && order == null){
+        if (name == null && subject == null && orderColumn == null && level == null && order == null) {
             return "SELECT * FROM test WHERE is_close = 0 ORDER BY name ASC LIMIT " + records + ", 12;";
-        }
-        else {
+        } else {
             StringBuilder startString = new StringBuilder("SELECT * FROM test ");
             String orderString = "ORDER BY " + orderColumn + " ASC ";
             if (Objects.equals(order, "0")) {
                 orderString = "ORDER BY " + orderColumn + " DESC ";
             }
             if (Objects.equals(name, null) && Objects.equals(subject, null) && Objects.equals(level, "0")) {
-                return startString + "WHERE is_close = 0 "+ orderString;
+                return startString + "WHERE is_close = 0 " + orderString;
             }
             startString.append("WHERE is_close = 0 ");
             if (!Objects.equals(name, null)) {
@@ -156,7 +155,7 @@ public class TestDAOImpl implements TestDAO {
     }
 
     @Override
-    public List<Test> getFilerResult(String name, String subject, String level, String orderColumn, String order, String page) {
+    public List<Test> getFilterResult(String name, String subject, String level, String orderColumn, String order, String page) {
         List<Test> tests = new ArrayList<>();
         Connection connection = ConnectionService.getConnection();
         try {
@@ -179,17 +178,16 @@ public class TestDAOImpl implements TestDAO {
     }
 
     private String getAllFilterRecordsQuery(String name, String subject, String level, String orderColumn, String order) {
-        if(name == null && subject == null && orderColumn == null && level == null && order == null){
+        if (name == null && subject == null && orderColumn == null && level == null && order == null) {
             return "SELECT COUNT(*) AS count FROM test WHERE is_close = 0 ORDER BY name ASC;";
-        }
-        else {
+        } else {
             StringBuilder startString = new StringBuilder("SELECT COUNT(*) AS count FROM test ");
             String orderString = "ORDER BY " + orderColumn + " ASC ";
             if (Objects.equals(order, "0")) {
                 orderString = "ORDER BY " + orderColumn + " DESC ";
             }
             if (Objects.equals(name, null) && Objects.equals(subject, null) && Objects.equals(level, "0")) {
-                return startString +"WHERE is_close = 0 " + orderString;
+                return startString + "WHERE is_close = 0 " + orderString;
             }
             startString.append("WHERE is_close = 0 ");
             if (!Objects.equals(name, null)) {
@@ -226,5 +224,136 @@ public class TestDAOImpl implements TestDAO {
             ConnectionService.close(connection);
         }
         return numbersOfTests;
+    }
+
+    private String getQueryForOwner(String name, String subject, String level, String orderColumn, String order, String owner, String page) {
+        if (page == null) {
+            page = "1";
+        }
+        int records = (Integer.parseInt(page) - 1) * 12;
+        if (name == null && subject == null && orderColumn == null && level == null && order == null) {
+            return "SELECT * FROM test WHERE owner = " + owner + " ORDER BY name ASC LIMIT " + records + ", 12;";
+        } else {
+            StringBuilder startString = new StringBuilder("SELECT * FROM test ");
+            String orderString = "ORDER BY " + orderColumn + " ASC ";
+            if (Objects.equals(order, "0")) {
+                orderString = "ORDER BY " + orderColumn + " DESC ";
+            }
+            if (Objects.equals(name, null) && Objects.equals(subject, null) && Objects.equals(level, "0")) {
+                return startString + "WHERE owner = " + owner + " " + orderString;
+            }
+            startString.append("WHERE owner =").append(owner).append(" ");
+            if (!Objects.equals(name, null)) {
+                startString.append("AND name LIKE '%").append(name).append("%' ");
+            }
+            if (!Objects.equals(subject, null) && startString.length() > 30) {
+                startString.append("AND subject LIKE '%").append(subject).append("%' ");
+            } else if (!Objects.equals(subject, "") && startString.length() < 30) {
+                startString.append("subject LIKE '%").append(subject).append("%' ");
+            }
+            if (!Objects.equals(level, "0") && !Objects.equals(level, "") && startString.length() > 30) {
+                startString.append("AND level = ").append(level).append(" ");
+            } else if (!Objects.equals(level, "0") && startString.length() < 30) {
+                startString.append("level = ").append(level).append(" ");
+            }
+            return startString + orderString + "LIMIT " + records + ", 12;";
+        }
+    }
+
+    @Override
+    public List<Test> getFilterResultForOwner(String name, String subject, String level, String orderColumn, String order, String owner, String page) {
+        List<Test> tests = new ArrayList<>();
+        Connection connection = ConnectionService.getConnection();
+        try {
+            assert connection != null;
+            PreparedStatement statement = connection.prepareStatement(getQueryForOwner(name, subject, level, orderColumn, order, owner, page));
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                tests.add(new Test(resultSet.getInt("id"), resultSet.getString("name"),
+                        resultSet.getString("subject"), resultSet.getString("created"),
+                        resultSet.getInt("is_close"), resultSet.getInt("time"),
+                        resultSet.getInt("finished"), userManager.getUserById(resultSet.getInt("owner")),
+                        levelManager.getLevelById(resultSet.getInt("level"))));
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+        } finally {
+            ConnectionService.close(connection);
+        }
+        return tests;
+    }
+
+    private String getAllFilterRecordsQueryForOwner(String name, String subject, String level, String orderColumn, String owner, String order) {
+        if (name == null && subject == null && orderColumn == null && level == null && order == null) {
+            return "SELECT COUNT(*) AS count FROM test WHERE owner = " + owner + " ORDER BY name ASC;";
+        } else {
+            StringBuilder startString = new StringBuilder("SELECT COUNT(*) AS count FROM test ");
+            String orderString = "ORDER BY " + orderColumn + " ASC ";
+            if (Objects.equals(order, "0")) {
+                orderString = "ORDER BY " + orderColumn + " DESC ";
+            }
+            if (Objects.equals(name, null) && Objects.equals(subject, null) && Objects.equals(level, "0")) {
+                return startString + "WHERE owner = " + owner + " " + orderString;
+            }
+            startString.append("WHERE owner =").append(owner).append(" ");
+            if (!Objects.equals(name, null)) {
+                startString.append("AND name LIKE '%").append(name).append("%' ");
+            }
+            if (!Objects.equals(subject, null) && startString.length() > 30) {
+                startString.append("AND subject LIKE '%").append(subject).append("%' ");
+            } else if (!Objects.equals(subject, "") && startString.length() < 30) {
+                startString.append("subject LIKE '%").append(subject).append("%' ");
+            }
+            if (!Objects.equals(level, "0") && !Objects.equals(level, "") && startString.length() > 30) {
+                startString.append("AND level = ").append(level).append(" ");
+            } else if (!Objects.equals(level, "0") && startString.length() < 30) {
+                startString.append("level = ").append(level).append(" ");
+            }
+            return startString + orderString;
+        }
+    }
+
+    @Override
+    public double getAllFilterTestsForOwner(String name, String subject, String level, String orderColumn, String owner, String order) {
+        int numbersOfTests = 0;
+        Connection connection = ConnectionService.getConnection();
+        try {
+            assert connection != null;
+            PreparedStatement statement = connection.prepareStatement(getAllFilterRecordsQueryForOwner(name, subject, level, orderColumn, owner, order));
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                numbersOfTests = Integer.parseInt(resultSet.getString("count"));
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+        } finally {
+            ConnectionService.close(connection);
+        }
+        return numbersOfTests;
+    }
+
+    @Override
+    public Test getTestByNameAndOwner(String name, long id) {
+        Test test = null;
+        Connection connection = ConnectionService.getConnection();
+        try {
+            assert connection != null;
+            PreparedStatement statement = connection.prepareStatement(GET_TEST_BY_NAME_AND_OWNER);
+            statement.setString(1, name);
+            statement.setLong(2, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                test = new Test(resultSet.getInt("id"), resultSet.getString("name"),
+                        resultSet.getString("subject"), resultSet.getString("created"),
+                        resultSet.getInt("is_close"), resultSet.getInt("time"),
+                        resultSet.getInt("finished"), userManager.getUserById(resultSet.getInt("owner")),
+                        levelManager.getLevelById(resultSet.getInt("level")));
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.INFO, "Query failed...");
+        } finally {
+            ConnectionService.close(connection);
+        }
+        return test;
     }
 }

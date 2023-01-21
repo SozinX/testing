@@ -3,30 +3,33 @@ package org.sozinx.service;
 import jakarta.servlet.http.HttpServletRequest;
 import org.sozinx.model.Test;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
-public class TestsServiceImpl implements TestsService {
+public class TestsByOwnerServiceImpl implements TestsByOwnerService {
     private final DataBaseServiceImpl manager;
-    private static TestsServiceImpl service;
+    private static TestsByOwnerServiceImpl service;
 
-    public TestsServiceImpl() {
+    public TestsByOwnerServiceImpl() {
         manager = DataBaseServiceImpl.getInstance();
     }
 
-    public static synchronized TestsServiceImpl getInstance() {
-        if (service == null) return new TestsServiceImpl();
+    public static synchronized TestsByOwnerServiceImpl getInstance() {
+        if (service == null) return new TestsByOwnerServiceImpl();
         return service;
     }
 
-    public double getCountOfPages(HttpServletRequest req) {
-        double count = manager.getTestManager().getAllFilterTests(req.getParameter("test-name"), req.getParameter("test-subject"),
-                req.getParameter("test-level"), req.getParameter("test-sort"), req.getParameter("test-order")) / 12;
+    public double getCountOfPagesByOwner(HttpServletRequest req) {
+        double count = manager.getTestManager().getAllFilterTestsForOwner(req.getParameter("test-name"), req.getParameter("test-subject"),
+                req.getParameter("test-level"), req.getParameter("test-sort"), String.valueOf(req.getSession().getAttribute("id")), req.getParameter("test-order")) / 12;
         return Math.ceil(count);
     }
 
-    public List<Test> getTests(HttpServletRequest req) {
-        return manager.getTestManager().getFilterResult(req.getParameter("test-name"), req.getParameter("test-subject"),
-                req.getParameter("test-level"), req.getParameter("test-sort"), req.getParameter("test-order"), req.getParameter("page"));
+    public List<Test> getTestsByOwner(HttpServletRequest req) {
+        return manager.getTestManager().getFilterResultForOwner(req.getParameter("test-name"), req.getParameter("test-subject"),
+                req.getParameter("test-level"), req.getParameter("test-sort"), req.getParameter("test-order"), String.valueOf(req.getSession().getAttribute("id")), req.getParameter("page"));
     }
 
     private StringBuilder getAddress(HttpServletRequest req) {
@@ -54,8 +57,8 @@ public class TestsServiceImpl implements TestsService {
     }
 
     public void setUserAttributes(HttpServletRequest req) {
-        req.setAttribute("tests", getTests(req));
-        req.setAttribute("pages", getCountOfPages(req));
+        req.setAttribute("tests", getTestsByOwner(req));
+        req.setAttribute("pages", getCountOfPagesByOwner(req));
         req.setAttribute("currentPage", req.getParameter("page"));
         req.setAttribute("address", getAddress(req).toString());
     }

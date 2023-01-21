@@ -42,6 +42,7 @@ public class QueryConst {
     public static final String DELETE_RESULT_BY_USER = "DELETE FROM question WHERE user = ?;";
     //TEST TABLE
     public static final String GET_TEST_BY_ID = "SELECT * FROM test WHERE id = ?;";
+    public static final String GET_TEST_BY_NAME_AND_OWNER = "SELECT * FROM test WHERE name = ? AND owner = ?;";
     public static final String ADD_TEST = "INSERT INTO test(owner, level, name, subject, created, is_close, time, finished) VALUES (?, ?, ?, ?, ?, ?, ?, 0);";
     public static final String UPDATE_TEST = "UPDATE test SET name = ?, subject = ?, is_close = ?, time = ?, level =? WHERE id = ?;";
     public static final String ADD_POPULARITY = "UPDATE test SET finished = finished + 1 WHERE id = ?;";
