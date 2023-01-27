@@ -5,29 +5,29 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.sozinx.service.EditQuestionService;
+import org.sozinx.service.EditQuestionServiceImpl;
 import org.sozinx.service.EditTestService;
 import org.sozinx.service.EditTestServiceImpl;
-import org.sozinx.service.SettingsService;
-import org.sozinx.service.SettingsServiceImpl;
 
 import java.io.IOException;
 
+import static org.sozinx.constant.AddressConst.EDIT_QUESTION_PAGE;
 import static org.sozinx.constant.AddressConst.EDIT_TEST_PAGE;
-import static org.sozinx.constant.AddressConst.SETTINGS_PAGE;
 
-@WebServlet("/edit/*")
-public class EditTestServlet extends HttpServlet {
+@WebServlet("/change/*")
+public class EditQuestionServlet extends HttpServlet {
 
-    private EditTestService service;
+    private EditQuestionService service;
     @Override
     public void init() throws ServletException {
-        service = EditTestServiceImpl.getInstance();
+        service = EditQuestionServiceImpl.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        service.setAttributeTest(req);
-        req.getRequestDispatcher(EDIT_TEST_PAGE).forward(req, resp);
+        service.setQuestionAttributes(req);
+        req.getRequestDispatcher(EDIT_QUESTION_PAGE).forward(req, resp);
     }
 
     @Override
@@ -39,8 +39,8 @@ public class EditTestServlet extends HttpServlet {
             doGet(req, resp);
         }
         else {
-            service.editData(req);
-            resp.sendRedirect(req.getRequestURI());
+            service.insertAndUpdateData(req);
+            resp.sendRedirect(req.getRequestURI() + "?question=" + req.getParameter("question"));
         }
     }
 }

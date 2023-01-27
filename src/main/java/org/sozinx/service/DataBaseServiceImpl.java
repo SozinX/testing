@@ -2,7 +2,8 @@ package org.sozinx.service;
 
 import org.sozinx.dao.*;
 
-public class DataBaseServiceImpl implements DataBaseService{
+public class DataBaseServiceImpl implements DataBaseService {
+    @SuppressWarnings("all")
     private static DataBaseServiceImpl service;
     private final UserDAO userManager;
     private final TestDAO testManager;

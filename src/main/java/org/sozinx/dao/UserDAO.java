@@ -7,9 +7,9 @@ public interface UserDAO {
 
     User getUserByEmail(String email);
 
-    boolean addUser(User user);
+    void addUser(User user);
 
-    boolean deleteUser(User user);
+    void deleteUser(User user);
 
-    boolean updateUser(User user, String[] params);
+    void updateUser(User user, String[] params);
 }

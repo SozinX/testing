@@ -4,9 +4,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.sozinx.model.Test;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TestsServiceImpl implements TestsService {
     private final DataBaseServiceImpl manager;
+    @SuppressWarnings("all")
     private static TestsServiceImpl service;
 
     public TestsServiceImpl() {
@@ -29,20 +31,11 @@ public class TestsServiceImpl implements TestsService {
                 req.getParameter("test-level"), req.getParameter("test-sort"), req.getParameter("test-order"), req.getParameter("page"));
     }
 
+    //Create an uri query for saving  parameters after press "next" and "prev" buttons on page
     private StringBuilder getAddress(HttpServletRequest req) {
-        String name = req.getParameter("test-name");
-        String subject = req.getParameter("test-subject");
-        String level = req.getParameter("test-level");
-        String orderColumn = req.getParameter("test-sort");
-        String order = req.getParameter("test-order");
         StringBuilder getQuery = new StringBuilder();
-        if (name != null && subject != null && orderColumn != null && level != null && order != null) {
-            Map<String, String> values = new LinkedHashMap<>();
-            values.put("&test-name=", name);
-            values.put("&test-subject=", subject);
-            values.put("&test-level=", level);
-            values.put("&test-sort=", orderColumn);
-            values.put("&test-order=", order);
+        Map<String, String> values = valuesAddIntoMap(req);
+        if (!isMapHasNull(values)) {
             values.forEach((key, value) -> {
                 getQuery.append(key);
                 if (!Objects.equals(value, "0")) {
@@ -53,6 +46,29 @@ public class TestsServiceImpl implements TestsService {
         return getQuery;
     }
 
+    //Predict an error if one or many values is null
+    private boolean isMapHasNull(Map<String, String> values) {
+        AtomicBoolean hasNull = new AtomicBoolean(false);
+        values.forEach((key, value) -> {
+            if (value == null) {
+                hasNull.set(true);
+            }
+        });
+        return hasNull.get();
+    }
+
+    //Save values into map for using it in method before
+    private Map<String, String> valuesAddIntoMap(HttpServletRequest req) {
+        Map<String, String> values = new LinkedHashMap<>();
+        values.put("&test-name=", req.getParameter("test-name"));
+        values.put("&test-subject=", req.getParameter("test-subject"));
+        values.put("&test-level=", req.getParameter("test-level"));
+        values.put("&test-sort=", req.getParameter("test-sort"));
+        values.put("&test-order=", req.getParameter("test-order"));
+        return values;
+    }
+
+    //Set request scope attributes
     public void setUserAttributes(HttpServletRequest req) {
         req.setAttribute("tests", getTests(req));
         req.setAttribute("pages", getCountOfPages(req));

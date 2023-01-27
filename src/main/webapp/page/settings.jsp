@@ -34,11 +34,17 @@
                               </select>
                               <br />
                           </c:when>
+                          <c:when test="${sessionScope.role == 'Student'}">
+
+                              <option value="1" selected>Student</option>
+                              <option value="2">Teacher</option>
+
+                          </c:when>
                             <c:otherwise>
-                                 <select name="set-role" class="custom-select" id="inputGroupSelect01">
-                                     <option value="1">Student</option>
-                                     <option value="2">Teacher</option>
-                                   </select>
+                                <select name="set-role" class="custom-select" id="inputGroupSelect01">
+                                       <option value="1">Student</option>
+                                       <option value="2" selected>Teacher</option>
+                                       </select>
                                 <br />
                             </c:otherwise>
                           </c:choose>
@@ -53,11 +59,9 @@
                         <span id="error" class="d-flex justify-content-around align-items-center mb-1 text-danger">${requestScope.message}</span>
                         <div class="py-3 pb-4 border-bottom d-flex align-items-center justify-content-center">
                                     <button class="btn btn-success mr-3">Save Changes</button>
+                                    <button type="button" class="btn border btn-secondary" onClick="window.location.reload(true)">Cancel</button>
                                 </div>
                     </form>
-                    <div class="py-3 pb-4 border-bottom d-flex align-items-center justify-content-center">
-                            <button class="btn border btn-secondary" onClick="window.location.reload(true)">Cancel</button>
-                    </div>
                   </div>
                 </div>
               </div>

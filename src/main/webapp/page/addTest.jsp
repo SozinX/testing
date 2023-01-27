@@ -36,18 +36,16 @@
                         <span id="error" class="d-flex justify-content-around align-items-center mb-1 text-danger">${requestScope.message}</span>
                         <div class="py-3 d-flex align-items-center justify-content-center">
                                     <button class="btn btn-success mr-3">Create test</button>
+                                     <button type="button" class="btn border btn-secondary" onClick="window.location.reload(true)">Cancel</button>
                                 </div>
                     </form>
-                    <div class="pb-4 pe-3 border-bottom d-flex align-items-center justify-content-center">
-                        <button class="btn border btn-secondary" onClick="window.location.reload(true)">Cancel</button>
-                    </div>
                     <div class="d-sm-flex align-items-center pt-3" id="addquestion">
                         <div>
                             <b>Your test will not be published until at least one question appears in it</b>
-                            <p>Go to edit last added test?</p>
+                            <p>Go to last added test?</p>
                         </div>
                         <div class="ml-auto">
-                            <button onclick="location.href='#'" type="button" class="btn btn btn-success">Edit test</button>
+                            <button type="button" onclick="location.href='/edit/${requestScope.lastAddedTest.id}'" type="button" class="btn btn btn-success">Edit test</button>
                         </div>
                     </div>
                   </div>

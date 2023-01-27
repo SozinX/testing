@@ -10,10 +10,14 @@ public interface QuestionDAO {
 
     List<Question> getQuestionByTest(Test test);
 
-    boolean addQuestion(Question question);
+    void addQuestion(Question question);
 
-    boolean updateQuestion(Question question, String[] params);
+    void updateQuestion(Question question, String[] params);
 
-    boolean deleteQuestion(Question question);
+    void deleteQuestion(Question question);
+
+    Question getQuestionByName(String name, long test, long id);
+
+    Question getLastQuestionByTest(Test test);
 
 }

@@ -5,29 +5,29 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.sozinx.service.EditTestService;
-import org.sozinx.service.EditTestServiceImpl;
-import org.sozinx.service.SettingsService;
-import org.sozinx.service.SettingsServiceImpl;
+import org.sozinx.service.AddQuestionService;
+import org.sozinx.service.AddQuestionServiceImpl;
+import org.sozinx.service.AddTestService;
+import org.sozinx.service.AddTestServiceImpl;
 
 import java.io.IOException;
 
-import static org.sozinx.constant.AddressConst.EDIT_TEST_PAGE;
-import static org.sozinx.constant.AddressConst.SETTINGS_PAGE;
+import static org.sozinx.constant.AddressConst.ADD_QUESTION_PAGE;
+import static org.sozinx.constant.AddressConst.ADD_TEST_PAGE;
 
-@WebServlet("/edit/*")
-public class EditTestServlet extends HttpServlet {
+@WebServlet("/add/*")
+public class AddQuestionServlet extends HttpServlet {
 
-    private EditTestService service;
+    private AddQuestionService service;
     @Override
     public void init() throws ServletException {
-        service = EditTestServiceImpl.getInstance();
+        service = AddQuestionServiceImpl.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         service.setAttributeTest(req);
-        req.getRequestDispatcher(EDIT_TEST_PAGE).forward(req, resp);
+        req.getRequestDispatcher(ADD_QUESTION_PAGE).forward(req, resp);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class EditTestServlet extends HttpServlet {
             doGet(req, resp);
         }
         else {
-            service.editData(req);
+            service.insertData(req);
             resp.sendRedirect(req.getRequestURI());
         }
     }

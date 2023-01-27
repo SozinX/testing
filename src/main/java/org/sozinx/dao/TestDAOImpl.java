@@ -1,6 +1,7 @@
 package org.sozinx.dao;
 
 import org.sozinx.model.Test;
+import org.sozinx.model.User;
 import org.sozinx.service.ConnectionService;
 
 import java.sql.Connection;
@@ -50,7 +51,7 @@ public class TestDAOImpl implements TestDAO {
     }
 
     @Override
-    public boolean addTest(Test test) {
+    public void addTest(Test test) {
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
@@ -63,15 +64,14 @@ public class TestDAOImpl implements TestDAO {
             statement.setInt(6, test.getIsClose());
             statement.setInt(7, test.getTime());
             statement.executeUpdate();
-            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
         } finally {
             ConnectionService.close(connection);
         }
-        return false;
     }
 
+    //changing local object Test for updating
     private void localChangeTest(Test test, String[] params) {
         test.setName(params[0]);
         test.setSubject(params[1]);
@@ -81,7 +81,7 @@ public class TestDAOImpl implements TestDAO {
     }
 
     @Override
-    public boolean updateTest(Test test, String[] params) {
+    public void updateTest(Test test, String[] params) {
         Connection connection = ConnectionService.getConnection();
         localChangeTest(test, params);
         try {
@@ -94,15 +94,14 @@ public class TestDAOImpl implements TestDAO {
             statement.setInt(5, test.getLevel().getId());
             statement.setLong(6, test.getId());
             statement.executeUpdate();
-            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
         } finally {
             ConnectionService.close(connection);
         }
-        return false;
     }
 
+    //increase popularity by one
     @Override
     public boolean addPopularity(Test test) {
         Connection connection = ConnectionService.getConnection();
@@ -120,6 +119,31 @@ public class TestDAOImpl implements TestDAO {
         return false;
     }
 
+    //getting last added test for current user
+    public Test getLastAddedTestByOwner(User owner) {
+        Test test = null;
+        Connection connection = ConnectionService.getConnection();
+        try {
+            assert connection != null;
+            PreparedStatement statement = connection.prepareStatement(GET_LAST_ADDED_TEST_BY_OWNER);
+            statement.setLong(1, owner.getId());
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                test = new Test(resultSet.getInt("id"), resultSet.getString("name"),
+                        resultSet.getString("subject"), resultSet.getString("created"),
+                        resultSet.getInt("is_close"), resultSet.getInt("time"),
+                        resultSet.getInt("finished"), userManager.getUserById(resultSet.getInt("owner")),
+                        levelManager.getLevelById(resultSet.getInt("level")));
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.INFO, "Query failed...");
+        } finally {
+            ConnectionService.close(connection);
+        }
+        return test;
+    }
+
+    //creating query for filtering tests on home page
     private String getQuery(String name, String subject, String level, String orderColumn, String order, String page) {
         if (page == null) {
             page = "1";
@@ -154,6 +178,7 @@ public class TestDAOImpl implements TestDAO {
         }
     }
 
+    //getting filter result for query created at the last method with pagination
     @Override
     public List<Test> getFilterResult(String name, String subject, String level, String orderColumn, String order, String page) {
         List<Test> tests = new ArrayList<>();
@@ -177,6 +202,7 @@ public class TestDAOImpl implements TestDAO {
         return tests;
     }
 
+    //query for getting all filter results for knowledge about number of pages(Calculating  is services)
     private String getAllFilterRecordsQuery(String name, String subject, String level, String orderColumn, String order) {
         if (name == null && subject == null && orderColumn == null && level == null && order == null) {
             return "SELECT COUNT(*) AS count FROM test WHERE is_close = 0 ORDER BY name ASC;";
@@ -207,25 +233,27 @@ public class TestDAOImpl implements TestDAO {
         }
     }
 
+    //using created at the previous method query and return number of tests
     @Override
     public double getAllFilterTests(String name, String subject, String level, String orderColumn, String order) {
-        int numbersOfTests = 0;
+        int numberOfTests = 0;
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
             PreparedStatement statement = connection.prepareStatement(getAllFilterRecordsQuery(name, subject, level, orderColumn, order));
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                numbersOfTests = Integer.parseInt(resultSet.getString("count"));
+                numberOfTests = Integer.parseInt(resultSet.getString("count"));
             }
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
         } finally {
             ConnectionService.close(connection);
         }
-        return numbersOfTests;
+        return numberOfTests;
     }
 
+    //get query for page My Test where I need to show only current user's tests
     private String getQueryForOwner(String name, String subject, String level, String orderColumn, String order, String owner, String page) {
         if (page == null) {
             page = "1";
@@ -260,6 +288,7 @@ public class TestDAOImpl implements TestDAO {
         }
     }
 
+    //using query created at the last method and getting tests for current owner
     @Override
     public List<Test> getFilterResultForOwner(String name, String subject, String level, String orderColumn, String order, String owner, String page) {
         List<Test> tests = new ArrayList<>();
@@ -283,6 +312,7 @@ public class TestDAOImpl implements TestDAO {
         return tests;
     }
 
+    //query for getting all filter results for knowledge about number of pages(calculating in services)
     private String getAllFilterRecordsQueryForOwner(String name, String subject, String level, String orderColumn, String owner, String order) {
         if (name == null && subject == null && orderColumn == null && level == null && order == null) {
             return "SELECT COUNT(*) AS count FROM test WHERE owner = " + owner + " ORDER BY name ASC;";
@@ -313,6 +343,7 @@ public class TestDAOImpl implements TestDAO {
         }
     }
 
+    //using created at the previous method query and return number of tests for current owner
     @Override
     public double getAllFilterTestsForOwner(String name, String subject, String level, String orderColumn, String owner, String order) {
         int numbersOfTests = 0;
@@ -333,7 +364,7 @@ public class TestDAOImpl implements TestDAO {
     }
 
     @Override
-    public Test getTestByNameAndOwner(String name, long id) {
+    public Test getTestByNameAndOwner(String name, long id, long testId) {
         Test test = null;
         Connection connection = ConnectionService.getConnection();
         try {
@@ -341,6 +372,7 @@ public class TestDAOImpl implements TestDAO {
             PreparedStatement statement = connection.prepareStatement(GET_TEST_BY_NAME_AND_OWNER);
             statement.setString(1, name);
             statement.setLong(2, id);
+            statement.setLong(3, testId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 test = new Test(resultSet.getInt("id"), resultSet.getString("name"),
@@ -350,10 +382,25 @@ public class TestDAOImpl implements TestDAO {
                         levelManager.getLevelById(resultSet.getInt("level")));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.log(Level.INFO, "Query failed... {0}", e.toString());
         } finally {
             ConnectionService.close(connection);
         }
         return test;
+    }
+
+    @Override
+    public void openTest(Test test) {
+        Connection connection = ConnectionService.getConnection();
+        try {
+            assert connection != null;
+            PreparedStatement statement = connection.prepareStatement(OPEN_TEST);
+            statement.setLong(1, test.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+        } finally {
+            ConnectionService.close(connection);
+        }
     }
 }

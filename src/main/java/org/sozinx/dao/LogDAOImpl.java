@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 
 import static org.sozinx.constant.QueryConst.*;
 
-@SuppressWarnings("unused")
 public class LogDAOImpl implements LogDAO {
     private static final Logger LOGGER = Logger.getLogger(String.valueOf(ResultDAOImpl.class));
     private final UserDAO userManager;

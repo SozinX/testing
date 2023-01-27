@@ -21,3 +21,7 @@ background-color:#897efc;
 border-color: #897efc;}
 #error{
 font-weight: bold;}
+select{
+overflow-y: auto;
+text-align: center;
+}

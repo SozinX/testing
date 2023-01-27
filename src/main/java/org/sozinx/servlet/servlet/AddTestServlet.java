@@ -23,6 +23,7 @@ public class AddTestServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        service.setLastAddedTest(req);
         req.getRequestDispatcher(ADD_TEST_PAGE).forward(req, resp);
     }
 

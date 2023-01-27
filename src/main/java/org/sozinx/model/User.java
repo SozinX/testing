@@ -5,7 +5,7 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private String registration;
+    private final String registration;
     private Role role;
 
     public User(long id, String name, String email, String password, String registration, Role role) {
@@ -53,9 +53,6 @@ public class User {
         return registration;
     }
 
-    public void setRegistration(String registration) {
-        this.registration = registration;
-    }
 
     public Role getRole() {
         return role;

@@ -65,7 +65,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean addUser(User user) {
+    public void addUser(User user) {
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
@@ -76,32 +76,29 @@ public class UserDAOImpl implements UserDAO {
             statement.setString(4, user.getRegistration());
             statement.setInt(5, user.getRole().getId());
             statement.executeUpdate();
-            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
         } finally {
             ConnectionService.close(connection);
         }
-        return false;
     }
 
     @Override
-    public boolean deleteUser(User user) {
+    public void deleteUser(User user) {
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
             PreparedStatement statement = connection.prepareStatement(DELETE_USER);
             statement.setLong(1, user.getId());
             statement.executeUpdate();
-            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...");
         } finally {
             ConnectionService.close(connection);
         }
-        return false;
     }
 
+    //changing local object User for updating
     private void localChangeUser(User user, String[] params) {
         user.setName(params[0]);
         user.setEmail(params[1]);
@@ -110,7 +107,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean updateUser(User user, String[] params) {
+    public void updateUser(User user, String[] params) {
         Connection connection = ConnectionService.getConnection();
         localChangeUser(user, params);
         try {
@@ -122,12 +119,10 @@ public class UserDAOImpl implements UserDAO {
             statement.setString(3, user.getPassword());
             statement.setLong(5, user.getId());
             statement.executeUpdate();
-            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...");
         } finally {
             ConnectionService.close(connection);
         }
-        return false;
     }
 }

@@ -2,8 +2,8 @@ package org.sozinx.model;
 
 public class Result {
     private long id;
-    private String date;
-    private int result;
+    private final String date;
+    private final int result;
     private User user;
     private Test test;
 
@@ -27,16 +27,8 @@ public class Result {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public int getResult() {
         return result;
-    }
-
-    public void setResult(int result) {
-        this.result = result;
     }
 
     public User getUser() {

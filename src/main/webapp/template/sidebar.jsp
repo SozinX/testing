@@ -2,7 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <div class="sidebar">
-     <hr style="margin-top: -1px;">
+     <hr style="margin-top: -2px;">
      <form action="/tests" method="get">
      <input hidden name="page" value="1">
          <div class="form-group column"">

@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 import static org.sozinx.constant.QueryConst.*;
 
-@SuppressWarnings("unused")
+
 public class BlockDAOImpl implements BlockDAO {
     private static final Logger LOGGER = Logger.getLogger(String.valueOf(RoleDAOImpl.class));
     private final UserDAO userManager;

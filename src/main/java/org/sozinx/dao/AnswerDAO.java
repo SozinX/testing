@@ -10,11 +10,11 @@ public interface AnswerDAO {
 
     List<Answer> getAnswerByQuestion(Question question);
 
-    boolean addAnswer(Answer answer);
+    void addAnswer(Answer answer);
 
-    boolean updateAnswer(Answer answer, String[] params);
+    void updateAnswer(Answer answer, String[] params);
 
-    boolean deleteAnswer(Answer answer);
+    void deleteAnswer(Answer answer);
 
-    boolean deleteAnswerByQuestion(Question question);
+    void deleteAnswerByQuestion(Question question);
 }

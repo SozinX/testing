@@ -13,6 +13,7 @@ import static org.sozinx.constant.RegexConst.PASSWORD;
 
 public class SettingsServiceImpl implements SettingsService {
     private final DataBaseServiceImpl manager;
+    @SuppressWarnings("all")
     private static SettingsServiceImpl service;
 
     private SettingsServiceImpl() {
@@ -24,11 +25,13 @@ public class SettingsServiceImpl implements SettingsService {
         return service;
     }
 
+    //Check is name long enough
     private static boolean nameIsValid(final HttpServletRequest req) {
         final String name = req.getParameter("set-name");
         return name != null && name.length() > 2;
     }
 
+    //Compare email with his regex
     private static boolean emailIsValid(final HttpServletRequest req) {
         final String email = req.getParameter("set-email");
         return Pattern.compile(EMAIL)
@@ -36,6 +39,7 @@ public class SettingsServiceImpl implements SettingsService {
                 .matches();
     }
 
+    //Compare two passwords. They must be equal
     private static boolean passwordsMatch(final HttpServletRequest req) {
         final String password = req.getParameter("new-password");
         if (password != null) {
@@ -44,6 +48,7 @@ public class SettingsServiceImpl implements SettingsService {
         return true;
     }
 
+    //Compare password with his regex
     private static boolean passwordIsValid(final HttpServletRequest req) {
         final String password = req.getParameter("new-password");
         if (password != null && !password.equals("")) {
@@ -54,6 +59,7 @@ public class SettingsServiceImpl implements SettingsService {
         return true;
     }
 
+    //Sum all validation method in one and get error messages
     private String inputIsValid(final HttpServletRequest req) {
         if (!nameIsValid(req)) {
             return NAME_ERROR;
@@ -67,6 +73,7 @@ public class SettingsServiceImpl implements SettingsService {
         return null;
     }
 
+    //Check is email already present in database and print error if it is
     private String isEmailPresentInDataBase(final HttpServletRequest req) {
         String email = req.getParameter("set-email");
         if (manager.getUserManager().getUserByEmail(email) == null || Objects.equals(req.getSession().getAttribute("email").toString(), email)) {
@@ -76,6 +83,7 @@ public class SettingsServiceImpl implements SettingsService {
         }
     }
 
+    //Get validation message
     public String validationMessage(final HttpServletRequest req) {
         String inputIsValid = inputIsValid(req);
         String isEmailPresentInDataBase = isEmailPresentInDataBase(req);
@@ -84,19 +92,30 @@ public class SettingsServiceImpl implements SettingsService {
         } else return isEmailPresentInDataBase;
     }
 
-    public void editData(final HttpServletRequest req) {
+    //Get values from page and make an array of Strings
+    private String[] getParameters(final HttpServletRequest req) {
         final String name = req.getParameter("set-name");
         final String email = req.getParameter("set-email");
         final String role = req.getParameter("set-role");
         String password = req.getParameter("new-password");
+        return new String[]{name, email, role, password};
+    }
+
+    public void editData(final HttpServletRequest req) {
+        String[] parameters = getParameters(req);
         User user = manager.getUserManager().getUserById(Long.parseLong(req.getSession().getAttribute("id").toString()));
-        if (password == null || password.equals("")) {
-            password = user.getPassword();
+        if (parameters[3] == null || parameters[3].equals("")) {
+            parameters[3] = user.getPassword();
         }
+        manager.getUserManager().updateUser(user, parameters);
+        setUserAttributes(req, parameters);
+    }
+
+    //Set into session scope new values after updating
+    private void setUserAttributes(final HttpServletRequest req, String[] parameters) {
         HttpSession session = req.getSession();
-        session.setAttribute("name", name);
-        session.setAttribute("email", email);
-        session.setAttribute("role", manager.getRoleManager().getRoleById(Integer.parseInt(role)).getRole());
-        manager.getUserManager().updateUser(user, new String[]{name, email, role, password});
+        session.setAttribute("name", parameters[0]);
+        session.setAttribute("email", parameters[1]);
+        session.setAttribute("role", manager.getRoleManager().getRoleById(Integer.parseInt(parameters[2])).getRole());
     }
 }

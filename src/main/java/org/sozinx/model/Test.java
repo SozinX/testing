@@ -4,11 +4,12 @@ public class Test {
     private long id;
     private String name;
     private String subject;
-    private  String created;
+    private final String created;
     private int isClose;
     private int time;
-    private long finished;
-    private User owner;
+    private final long finished;
+
+    private final User owner;
     private Level level;
 
     public Test(long id, String name, String subject, String created, int isClose, int time, long finished, User owner, Level level) {
@@ -51,10 +52,6 @@ public class Test {
         return created;
     }
 
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
     public int getIsClose() {
         return isClose;
     }
@@ -71,20 +68,13 @@ public class Test {
         this.time = time;
     }
 
+    @SuppressWarnings("unused")
     public long getFinished() {
         return finished;
     }
 
-    public void setFinished(int finished) {
-        this.finished = finished;
-    }
-
     public User getOwner() {
         return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
     }
 
     public Level getLevel() {

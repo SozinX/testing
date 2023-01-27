@@ -2,8 +2,8 @@ package org.sozinx.model;
 
 public class Block {
     private long id;
-    private User teacher;
-    private User student;
+    private final User teacher;
+    private final User student;
     private String block;
     private String unblock;
 
@@ -27,16 +27,8 @@ public class Block {
         return teacher;
     }
 
-    public void setTeacher(User teacher) {
-        this.teacher = teacher;
-    }
-
     public User getStudent() {
         return student;
-    }
-
-    public void setStudent(User student) {
-        this.student = student;
     }
 
     public String getBlock() {

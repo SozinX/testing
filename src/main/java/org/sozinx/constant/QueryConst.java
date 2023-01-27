@@ -28,7 +28,9 @@ public class QueryConst {
     public static final String DELETE_LOG_BY_USER = "DELETE FROM log WHERE user = ?;";
     //QUESTION TABLE
     public static final String GET_QUESTION_BY_ID = "SELECT * FROM question WHERE id = ?;";
+    public static final String GET_QUESTION_BY_QUESTION = "SELECT * FROM question WHERE question = ? AND test = ? AND id != ?;";
     public static final String GET_QUESTION_BY_TEST = "SELECT * FROM question WHERE test = ?;";
+    public static final String GET_LAST_QUESTION_BY_TEST = "SELECT * FROM question WHERE test = ? ORDER BY id DESC LIMIT 1;";
     public static final String ADD_QUESTION = "INSERT INTO question(test, question, type) VALUES (?, ?, ?);";
     public static final String UPDATE_QUESTION = "UPDATE question SET question = ?, type = ? WHERE id = ?;";
     public static final String DELETE_QUESTION = "DELETE FROM question WHERE id = ?;";
@@ -42,10 +44,12 @@ public class QueryConst {
     public static final String DELETE_RESULT_BY_USER = "DELETE FROM question WHERE user = ?;";
     //TEST TABLE
     public static final String GET_TEST_BY_ID = "SELECT * FROM test WHERE id = ?;";
-    public static final String GET_TEST_BY_NAME_AND_OWNER = "SELECT * FROM test WHERE name = ? AND owner = ?;";
+    public static final String GET_TEST_BY_NAME_AND_OWNER = "SELECT * FROM test WHERE name = ? AND owner = ? AND id != ?;";
     public static final String ADD_TEST = "INSERT INTO test(owner, level, name, subject, created, is_close, time, finished) VALUES (?, ?, ?, ?, ?, ?, ?, 0);";
     public static final String UPDATE_TEST = "UPDATE test SET name = ?, subject = ?, is_close = ?, time = ?, level =? WHERE id = ?;";
+    public static final String OPEN_TEST = "UPDATE test SET is_close = 1 WHERE id = ? AND is_close = 2;";
     public static final String ADD_POPULARITY = "UPDATE test SET finished = finished + 1 WHERE id = ?;";
+    public static final String GET_LAST_ADDED_TEST_BY_OWNER = "SELECT * FROM test WHERE owner = ? ORDER BY id DESC LIMIT 1;";
     //USER TABLE
     public static final String GET_USER_BY_ID = "SELECT * FROM user WHERE id = ?;";
     public static final String GET_USER_BY_EMAIL = "SELECT * FROM user WHERE email = ?;";

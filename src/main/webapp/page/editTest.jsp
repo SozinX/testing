@@ -87,14 +87,15 @@
                         <span id="error" class="d-flex justify-content-around align-items-center mb-1 text-danger">${requestScope.message}</span>
                         <div class="py-3 d-flex align-items-center justify-content-center">
                                     <button class="btn btn-success mr-3">Edit test</button>
+                                    <button type="button" class="btn border btn-secondary" onClick="window.location.reload(true)">Cancel</button>
                                 </div>
                     </form>
-                    <div class="pb-4 pe-3 border-bottom d-flex align-items-center justify-content-center">
-                        <button class="btn border btn-secondary" onClick="window.location.reload(true)">Cancel</button>
-                    </div>
                     <div class="d-flex align-items-center pt-3" id="editquestion">
+                     <div class="text-center">
+                          <b>Change questions and answers or add new</b>
+                      </div>
                         <div class="ml-auto">
-                            <button class="btn btn btn-success">Go to questions</button>
+                           <button class="btn btn btn-success" onclick="location.href = '/change/${requestScope.currentTest.id}?question=1';">Go to questions</button>
                         </div>
                     </div>
                   </div>

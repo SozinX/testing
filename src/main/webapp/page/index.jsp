@@ -62,7 +62,7 @@
                         <div>
                             <h4>${test.name}</h4>
                             <div>${test.subject}</div>
-                            <div>${test.owner.name} • ${test.level.level}</div>
+                            <div>${test.owner.name} • ${test.level.level} | ${test.finished}</div>
                         </div>
                     </div>
                 </a>

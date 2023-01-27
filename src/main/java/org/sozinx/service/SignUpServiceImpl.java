@@ -11,6 +11,7 @@ import static org.sozinx.constant.RegexConst.*;
 
 public class SignUpServiceImpl implements SignUpService {
     private final DataBaseServiceImpl manager;
+    @SuppressWarnings("all")
     private static SignUpServiceImpl service;
 
     private SignUpServiceImpl() {
@@ -22,11 +23,13 @@ public class SignUpServiceImpl implements SignUpService {
         return service;
     }
 
+    //Check is name long enough
     private static boolean nameIsValid(final HttpServletRequest req) {
         final String name = req.getParameter("name");
         return name != null && name.length() > 2;
     }
 
+    //Compare email with his regex
     private static boolean emailIsValid(final HttpServletRequest req) {
         final String email = req.getParameter("email");
         return Pattern.compile(EMAIL)
@@ -34,6 +37,7 @@ public class SignUpServiceImpl implements SignUpService {
                 .matches();
     }
 
+    //Compare password with his regex
     private static boolean passwordIsValid(final HttpServletRequest req) {
         final String password = req.getParameter("password");
         return Pattern.compile(PASSWORD)
@@ -41,6 +45,7 @@ public class SignUpServiceImpl implements SignUpService {
                 .matches();
     }
 
+    //Sum all validation method in one and get error messages
     private String inputIsValid(final HttpServletRequest req) {
         if (!nameIsValid(req)) {
             return NAME_ERROR;
@@ -52,6 +57,7 @@ public class SignUpServiceImpl implements SignUpService {
         return null;
     }
 
+    //Check is email already present in database and print error if it is
     private String isEmailPresentInDataBase(final HttpServletRequest req) {
         String email = req.getParameter("email");
         if (manager.getUserManager().getUserByEmail(email) == null) {
@@ -61,6 +67,7 @@ public class SignUpServiceImpl implements SignUpService {
         }
     }
 
+    //Get validation message
     public String validationMessage(final HttpServletRequest req) {
         String inputIsValid = inputIsValid(req);
         String isEmailPresentInDataBase = isEmailPresentInDataBase(req);

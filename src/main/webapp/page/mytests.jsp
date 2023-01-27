@@ -46,13 +46,14 @@
                     </c:choose>
               </ul>
             </nav>
-            c:when test="${requestScope.tests == '[]'}">
+            <c:choose>
+            <c:when test="${requestScope.tests == '[]'}">
                         <div class="col-lg-15">
                                 <img src="https://cdn.dribbble.com/users/2382015/screenshots/6065978/media/8b4662f8023e4e2295f865106b5d3aa7.gif"
                                   class="img-fluid" alt="Sample image">
                          </div>
-                         </c:when>
-                         <c:otherwise>
+             </c:when>
+             <c:otherwise>
             <c:forEach items="${requestScope.tests}" var="test">
                 <form id="for-hover" class="col-xl-3">
                     <a href="/edit/${test.id}" class="card card-video border-0 bg-transparent mb-4">
@@ -62,7 +63,7 @@
                                 <input name="current" value="${test.id}" disabled hidden>
                                 <h4>${test.name}</h4>
                                 <div>${test.subject}</div>
-                                <div>${test.owner.name} • ${test.level.level}
+                                <div>${test.owner.name} • ${test.level.level} | ${test.finished}
                                 <c:choose>
                                     <c:when test="${test.isClose == '0'}">
                                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" fill="currentColor" class="bi bi-unlock-fill" viewBox="0 0 16 16">
@@ -79,7 +80,6 @@
                         </div>
                     </a>
                 </form>
-                 </c:forEach>
                  </c:forEach>
                   </c:otherwise>
                   </c:choose>
