@@ -8,7 +8,7 @@ import java.util.Objects;
 import static org.sozinx.constant.ErrorConst.*;
 
 public class LogInServiceImpl implements LogInService {
-    private final DataBaseServiceImpl manager;
+    private final DataBaseService manager;
     @SuppressWarnings("all")
     private static LogInService service;
     private User checkingUser;

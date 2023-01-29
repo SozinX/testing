@@ -66,7 +66,7 @@ public class AnswerDAOImpl implements AnswerDAO {
     }
 
     @Override
-    public void addAnswer(Answer answer) {
+    public boolean addAnswer(Answer answer) {
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
@@ -75,11 +75,13 @@ public class AnswerDAOImpl implements AnswerDAO {
             statement.setString(2, answer.getAnswer());
             statement.setInt(3, answer.getCorrectness());
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
         } finally {
             ConnectionService.close(connection);
         }
+        return false;
     }
 
     //changing local object Answer for updating
@@ -89,7 +91,7 @@ public class AnswerDAOImpl implements AnswerDAO {
     }
 
     @Override
-    public void updateAnswer(Answer answer, String[] params) {
+    public boolean updateAnswer(Answer answer, String[] params) {
         Connection connection = ConnectionService.getConnection();
         localChangeAnswer(answer, params);
         try {
@@ -99,40 +101,46 @@ public class AnswerDAOImpl implements AnswerDAO {
             statement.setInt(2, answer.getCorrectness());
             statement.setLong(3, answer.getId());
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...");
         } finally {
             ConnectionService.close(connection);
         }
+        return false;
     }
 
     @Override
-    public void deleteAnswer(Answer answer) {
+    public boolean deleteAnswer(Answer answer) {
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
             PreparedStatement statement = connection.prepareStatement(DELETE_ANSWER);
             statement.setLong(1, answer.getId());
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...");
         } finally {
             ConnectionService.close(connection);
         }
+        return false;
     }
 
     @Override
-    public void deleteAnswerByQuestion(Question question) {
+    public boolean deleteAnswerByQuestion(Question question) {
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
             PreparedStatement statement = connection.prepareStatement(DELETE_ANSWER_BY_QUESTION);
             statement.setLong(1, question.getId());
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...");
         } finally {
             ConnectionService.close(connection);
         }
+        return false;
     }
 }

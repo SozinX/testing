@@ -33,7 +33,7 @@ public class BlockDAOImpl implements BlockDAO {
             PreparedStatement statement = connection.prepareStatement(GET_BLOCK_BY_USER);
             statement.setLong(1, user.getId());
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 block.add(new Block(resultSet.getLong("id"), user,
                         userManager.getUserById(resultSet.getLong("teacher")),
                         resultSet.getString("block"), resultSet.getString("unblock")));
@@ -68,17 +68,15 @@ public class BlockDAOImpl implements BlockDAO {
     @Override
     public boolean unblockUser(Block block, String unblock) {
         Connection connection = ConnectionService.getConnection();
-        block.setUnblock(unblock);
         try {
             assert connection != null;
             PreparedStatement statement = connection.prepareStatement(UNBLOCK_USER);
-            statement.setString(1, block.getUnblock());
-            statement.setLong(3, block.getTeacher().getId());
-            statement.setLong(2, block.getStudent().getId());
+            statement.setString(1, unblock);
+            statement.setLong(2, block.getId());
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
         } finally {
             ConnectionService.close(connection);
         }

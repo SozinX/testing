@@ -51,7 +51,7 @@ public class TestDAOImpl implements TestDAO {
     }
 
     @Override
-    public void addTest(Test test) {
+    public boolean addTest(Test test) {
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
@@ -64,11 +64,13 @@ public class TestDAOImpl implements TestDAO {
             statement.setInt(6, test.getIsClose());
             statement.setInt(7, test.getTime());
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
         } finally {
             ConnectionService.close(connection);
         }
+        return false;
     }
 
     //changing local object Test for updating
@@ -81,7 +83,7 @@ public class TestDAOImpl implements TestDAO {
     }
 
     @Override
-    public void updateTest(Test test, String[] params) {
+    public boolean updateTest(Test test, String[] params) {
         Connection connection = ConnectionService.getConnection();
         localChangeTest(test, params);
         try {
@@ -94,11 +96,13 @@ public class TestDAOImpl implements TestDAO {
             statement.setInt(5, test.getLevel().getId());
             statement.setLong(6, test.getId());
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
         } finally {
             ConnectionService.close(connection);
         }
+        return false;
     }
 
     //increase popularity by one
@@ -390,17 +394,19 @@ public class TestDAOImpl implements TestDAO {
     }
 
     @Override
-    public void openTest(Test test) {
+    public boolean openTest(Test test) {
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
             PreparedStatement statement = connection.prepareStatement(OPEN_TEST);
             statement.setLong(1, test.getId());
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
         } finally {
             ConnectionService.close(connection);
         }
+        return false;
     }
 }

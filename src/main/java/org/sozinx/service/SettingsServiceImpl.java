@@ -12,7 +12,7 @@ import static org.sozinx.constant.RegexConst.EMAIL;
 import static org.sozinx.constant.RegexConst.PASSWORD;
 
 public class SettingsServiceImpl implements SettingsService {
-    private final DataBaseServiceImpl manager;
+    private final DataBaseService manager;
     @SuppressWarnings("all")
     private static SettingsServiceImpl service;
 

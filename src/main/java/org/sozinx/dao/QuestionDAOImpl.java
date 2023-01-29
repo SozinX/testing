@@ -112,7 +112,7 @@ public class QuestionDAOImpl implements QuestionDAO {
     }
 
     @Override
-    public void addQuestion(Question question) {
+    public boolean addQuestion(Question question) {
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
@@ -121,11 +121,13 @@ public class QuestionDAOImpl implements QuestionDAO {
             statement.setString(2, question.getQuestion());
             statement.setInt(3, question.getType().getId());
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
         } finally {
             ConnectionService.close(connection);
         }
+        return false;
     }
 
     //changing local object Question for updating
@@ -135,7 +137,7 @@ public class QuestionDAOImpl implements QuestionDAO {
     }
 
     @Override
-    public void updateQuestion(Question question, String[] params) {
+    public boolean updateQuestion(Question question, String[] params) {
         Connection connection = ConnectionService.getConnection();
         localChangeQuestion(question, params);
         try {
@@ -145,26 +147,29 @@ public class QuestionDAOImpl implements QuestionDAO {
             statement.setInt(2, question.getType().getId());
             statement.setLong(3, question.getId());
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...");
         } finally {
             ConnectionService.close(connection);
         }
+        return false;
     }
 
     @Override
-    public void deleteQuestion(Question question) {
+    public boolean deleteQuestion(Question question) {
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
             PreparedStatement statement = connection.prepareStatement(DELETE_QUESTION);
             statement.setLong(1, question.getId());
-            System.out.println(question.getId() + " done");
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
         } finally {
             ConnectionService.close(connection);
         }
+        return false;
     }
 }

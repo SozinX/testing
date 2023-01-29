@@ -65,7 +65,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void addUser(User user) {
+    public boolean addUser(User user) {
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
@@ -76,26 +76,30 @@ public class UserDAOImpl implements UserDAO {
             statement.setString(4, user.getRegistration());
             statement.setInt(5, user.getRole().getId());
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
         } finally {
             ConnectionService.close(connection);
         }
+        return false;
     }
 
     @Override
-    public void deleteUser(User user) {
+    public boolean deleteUser(User user) {
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
             PreparedStatement statement = connection.prepareStatement(DELETE_USER);
             statement.setLong(1, user.getId());
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...");
         } finally {
             ConnectionService.close(connection);
         }
+        return false;
     }
 
     //changing local object User for updating
@@ -107,7 +111,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void updateUser(User user, String[] params) {
+    public boolean updateUser(User user, String[] params) {
         Connection connection = ConnectionService.getConnection();
         localChangeUser(user, params);
         try {
@@ -119,10 +123,12 @@ public class UserDAOImpl implements UserDAO {
             statement.setString(3, user.getPassword());
             statement.setLong(5, user.getId());
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...");
         } finally {
             ConnectionService.close(connection);
         }
+        return false;
     }
 }

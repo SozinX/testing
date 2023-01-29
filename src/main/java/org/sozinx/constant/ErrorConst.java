@@ -18,4 +18,6 @@ public class ErrorConst {
     public static final String MULTIPLY_ERROR = "In question with many correct answers you need to set two and more correct answers";
     public static final String SINGLE_ERROR = "In question with one correct answer you need to set only one correct answer";
     public static final String ANSWER_ERROR = "Some of your answers is too short";
+    public static final String USER_IS_BLOCKED = "User is in block already";
+    public static final String USER_IS_NOT_BLOCKED = "User is not in block";
 }

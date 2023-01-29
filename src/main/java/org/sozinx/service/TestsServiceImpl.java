@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TestsServiceImpl implements TestsService {
-    private final DataBaseServiceImpl manager;
+    private final DataBaseService manager;
     @SuppressWarnings("all")
     private static TestsServiceImpl service;
 

@@ -9,7 +9,7 @@ import static org.sozinx.constant.ErrorConst.*;
 import static org.sozinx.constant.RegexConst.TIME;
 
 public class EditTestServiceImpl implements EditTestService {
-    private final DataBaseServiceImpl manager;
+    private final DataBaseService manager;
     @SuppressWarnings("all")
     private static EditTestServiceImpl service;
 

@@ -17,7 +17,7 @@ public class QueryConst {
     //BLOCK TABLE
     public static final String GET_BLOCK_BY_USER = "SELECT * FROM block WHERE student = ?;";
     public static final String BLOCK_USER = "INSERT INTO block(teacher, student, block) VALUES (?, ?, ?);";
-    public static final String UNBLOCK_USER = "UPDATE block SET unblock = ? WHERE student = ?; teacher = ?";
+    public static final String UNBLOCK_USER = "UPDATE block SET unblock = ? WHERE id = ?;";
     public static final String DELETE_BLOCK_BY_USER = "DELETE FROM block WHERE user = ?;";
     //LOG TABLE
     public static final String GET_LOG_BY_USER = "SELECT * FROM log WHERE user = ?;";

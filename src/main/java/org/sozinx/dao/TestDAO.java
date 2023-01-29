@@ -1,6 +1,5 @@
 package org.sozinx.dao;
 
-import org.sozinx.model.Question;
 import org.sozinx.model.Test;
 import org.sozinx.model.User;
 
@@ -9,13 +8,13 @@ import java.util.List;
 public interface TestDAO {
     Test getTestById(long id);
 
-    void addTest(Test test);
+    boolean addTest(Test test);
 
-    void updateTest(Test test, String[] params);
+    boolean updateTest(Test test, String[] params);
 
     boolean addPopularity(Test test);
 
-    void openTest(Test test);
+    boolean openTest(Test test);
 
     Test getLastAddedTestByOwner(User owner);
 

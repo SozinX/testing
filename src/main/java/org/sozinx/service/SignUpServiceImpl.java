@@ -10,7 +10,7 @@ import static org.sozinx.constant.ErrorConst.*;
 import static org.sozinx.constant.RegexConst.*;
 
 public class SignUpServiceImpl implements SignUpService {
-    private final DataBaseServiceImpl manager;
+    private final DataBaseService manager;
     @SuppressWarnings("all")
     private static SignUpServiceImpl service;
 

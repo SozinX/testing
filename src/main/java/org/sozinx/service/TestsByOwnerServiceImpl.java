@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TestsByOwnerServiceImpl implements TestsByOwnerService {
-    private final DataBaseServiceImpl manager;
+    private final DataBaseService manager;
     @SuppressWarnings("all")
     private static TestsByOwnerServiceImpl service;
 

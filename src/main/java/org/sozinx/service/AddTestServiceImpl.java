@@ -12,7 +12,7 @@ import static org.sozinx.constant.ErrorConst.*;
 import static org.sozinx.constant.RegexConst.*;
 
 public class AddTestServiceImpl implements AddTestService {
-    private final DataBaseServiceImpl manager;
+    private final DataBaseService manager;
     @SuppressWarnings("all")
     private static AddTestServiceImpl service;
 

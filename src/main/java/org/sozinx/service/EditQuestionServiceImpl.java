@@ -10,7 +10,7 @@ import java.util.Objects;
 import static org.sozinx.constant.ErrorConst.*;
 
 public class EditQuestionServiceImpl implements EditQuestionService {
-    private final DataBaseServiceImpl manager;
+    private final DataBaseService manager;
     @SuppressWarnings("all")
     private static EditQuestionServiceImpl service;
 
