@@ -2,6 +2,7 @@ package org.sozinx.dao;
 
 import org.sozinx.model.Answer;
 import org.sozinx.model.Question;
+import org.sozinx.model.Test;
 import org.sozinx.service.ConnectionService;
 
 import java.sql.Connection;
@@ -120,7 +121,7 @@ public class AnswerDAOImpl implements AnswerDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
         } finally {
             ConnectionService.close(connection);
         }
@@ -142,5 +143,25 @@ public class AnswerDAOImpl implements AnswerDAO {
             ConnectionService.close(connection);
         }
         return false;
+    }
+
+    @Override
+    public int getCountOfAnswers(Test test) {
+        int count = 0;
+        Connection connection = ConnectionService.getConnection();
+        try {
+            assert connection != null;
+            PreparedStatement statement = connection.prepareStatement(GET_COUNT_OF_ANSWERS);
+            statement.setLong(1, test.getId());
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                count = resultSet.getInt("count");
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.INFO, "Query failed...");
+        } finally {
+            ConnectionService.close(connection);
+        }
+        return count;
     }
 }

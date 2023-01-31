@@ -59,10 +59,8 @@ public class AddTestServiceImpl implements AddTestService {
 
     //Check is name already used by this user
     private String isNamePresentInDataBase(final HttpServletRequest req) {
-        String uri = req.getRequestURI();
-        long testId = Long.parseLong(uri.substring(uri.lastIndexOf("/") + 1));
         String name = req.getParameter("test-name");
-        if (manager.getTestManager().getTestByNameAndOwner(name, Long.parseLong(String.valueOf(req.getSession().getAttribute("id"))), testId) == null) {
+        if (manager.getTestManager().getTestByNameAndOwner(name, Long.parseLong(String.valueOf(req.getSession().getAttribute("id"))), 0) == null) {
             return null;
         } else {
             return TEST_NAME_IS_PRESENT;

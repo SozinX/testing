@@ -13,9 +13,6 @@
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">My grades</a>
-                </li>
             </ul>
         </div>
         <div class="collapse navbar-collapse" id="navbarSuapportedContent-4">

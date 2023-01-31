@@ -56,7 +56,7 @@
              <c:otherwise>
         <c:forEach items="${requestScope.tests}" var="test">
             <div id="for-hover" class="col-xl-3">
-                <a href="#" class="card card-video border-0 bg-transparent mb-4">
+                <a href="/view/${test.id}" class="card card-video border-0 bg-transparent mb-4">
                     <img src="https://img.freepik.com/premium-vector/job-exam-test-vector-illustration_138676-243.jpg?w=2000" class="img-fluid" alt="">
                     <div class="card-video-details d-flex mt-2">
                         <div>

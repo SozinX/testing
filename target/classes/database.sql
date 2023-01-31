@@ -22,6 +22,8 @@ CONSTRAINT pk_user PRIMARY KEY(id),
 CONSTRAINT fk_role FOREIGN KEY(role) REFERENCES role(id),
 CONSTRAINT uc_user UNIQUE (id, email));
 
+INSERT INTO user VALUES(default, "For testing test", "testingtest125323734@gmail.com",  "1232131", "2022-01-01", "3");
+
 CREATE TABLE IF NOT EXISTS level (
 id INT UNSIGNED NOT NULL AUTO_INCREMENT, 
 level VARCHAR(30) NOT NULL,
@@ -53,6 +55,8 @@ CONSTRAINT pk_test PRIMARY KEY(id),
 CONSTRAINT fk_owner FOREIGN KEY(owner) REFERENCES user(id),
 CONSTRAINT fk_level FOREIGN KEY(level) REFERENCES level(id));
 
+INSERT INTO test VALUES(default, "For test test", "For test subject", "2022-09-13", 1, 10, 0, 1, 1);
+
 CREATE TABLE IF NOT EXISTS question(
 id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 question VARCHAR(300) NOT NULL,
@@ -61,6 +65,8 @@ type INT UNSIGNED NOT NULL,
 CONSTRAINT pk_question PRIMARY KEY(id),
 CONSTRAINT fk_test FOREIGN KEY(test) REFERENCES test(id),
 CONSTRAINT fk_type FOREIGN KEY(type) REFERENCES type(id));
+
+INSERT INTO question VALUES(default, "ForAnswerQuestion", 1, 1);
 
 CREATE TABLE IF NOT EXISTS answer(
 id INT UNSIGNED NOT NULL AUTO_INCREMENT,

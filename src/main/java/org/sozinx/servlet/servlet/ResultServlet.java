@@ -5,27 +5,30 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.sozinx.service.DeleteQuestionService;
-import org.sozinx.service.DeleteQuestionServiceImpl;
+import org.sozinx.service.ResultService;
+import org.sozinx.service.ResultServiceImpl;
 
 import java.io.IOException;
 
 
-@WebServlet("/delete/*")
+@WebServlet("/result/*")
 @SuppressWarnings("unused")
-public class DeleteQuestionServlet extends HttpServlet {
+public class ResultServlet extends HttpServlet {
 
-    private DeleteQuestionService service;
+    private ResultService service;
 
     @Override
     public void init() throws ServletException {
-        service = DeleteQuestionServiceImpl.getInstance();
+        service = ResultServiceImpl.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        service.deleteQuestionAndAnswers(req);
-        resp.sendRedirect("/change/" + service.getTestIdFromUri(req) + "?question=1");
+        service.countResult(req);
+        String test = String.valueOf(req.getSession().getAttribute("testId"));
+        req.getSession().setAttribute("testId", "");
+        req.getSession().setAttribute("questionNumber", "");
+        resp.sendRedirect("/view/" + test);
     }
 
 }

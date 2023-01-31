@@ -27,5 +27,7 @@ public interface TestDAO {
     double getAllFilterTestsForOwner(String name, String subject, String level, String orderColumn, String owner, String order);
 
     Test getTestByNameAndOwner(String name, long id, long testId);
+
+    boolean deleteTestById(long id);
 }
 

@@ -1,9 +1,13 @@
 package org.sozinx.service;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.sozinx.model.Block;
 import org.sozinx.model.User;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.sozinx.constant.ErrorConst.*;
 
@@ -35,12 +39,26 @@ public class LogInServiceImpl implements LogInService {
         return Objects.equals(password, checkingUser.getPassword());
     }
 
+    private boolean userIsBlocked(final HttpServletRequest req) {
+        List<Block> blockHistory = manager.getBlockManager().getBlockByUser(
+                manager.getUserManager().getUserByEmail(req.getParameter("email")));
+        AtomicBoolean isBlocked = new AtomicBoolean(false);
+        blockHistory.forEach(block -> {
+            if (Objects.equals(block.getUnblock(), "") || block.getUnblock() == null) {
+                isBlocked.set(true);
+            }
+        });
+        return isBlocked.get();
+    }
+
     //Sum all validation method in one and get error messages
     public String inputIsCorrect(final HttpServletRequest req) {
         if (!emailIsCorrect(req)) {
             return EMAIL_IS_ABSENT;
         } else if (!passwordIsCorrect(req)) {
             return PASSWORD_IS_NOT_CORRECT;
+        } else if (userIsBlocked(req)) {
+            return USER_IS_BLOCKED;
         }
         return null;
     }
@@ -48,5 +66,16 @@ public class LogInServiceImpl implements LogInService {
     //Returns user that we already check for work with his information in session
     public User getCheckingUser() {
         return checkingUser;
+    }
+
+    @Override
+    public void setAttributes(HttpServletRequest req) {
+        HttpSession session = req.getSession();
+        session.setAttribute("id", getCheckingUser().getId());
+        session.setAttribute("name", getCheckingUser().getName());
+        session.setAttribute("email", getCheckingUser().getEmail());
+        session.setAttribute("role", getCheckingUser().getRole().getRole());
+        session.setAttribute("testId", "");
+        session.setAttribute("questionNumber", "");
     }
 }

@@ -6,7 +6,7 @@
 <style><%@include file="../style/settings.css"%></style>
 <%@include file="../template/sidebarEditQuestions.jsp"%>
 <head>
-    <title>Quick Test: Add question</title>
+    <title>Quick Test: Edit question</title>
 </head>
 <div class="mx-auto bg-white mt-lg-5 col-8">
     <h4 class="py-4 border-bottom d-flex align-items-center justify-content-center">Question updating</h4>
@@ -83,14 +83,14 @@
                 </div>
               </div>
             </section>
-            <form action="/delete/${requestScope.currentTest.id}?question=${requestScope.currentPage}">
+            <form>
     <div class="pt-3" id="delete">
         <div class="text-center">
             <b>Delete question?<br> </b>
             <span>This question and all answers will be deleted</span>
         </div>
             <div class="pb-3 mt-1 d-flex justify-content-center">
-            <button class="btn danger">Delete</button>
+            <button class="btn danger" type="button" onclick="location.href = '/delete/${requestScope.currentTest.id}?question=${requestScope.currentPage}';">Delete</button>
         </div>
     </div>
 </div>

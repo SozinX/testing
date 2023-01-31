@@ -6,23 +6,21 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.sozinx.model.Test;
-import org.sozinx.service.DataBaseService;
-import org.sozinx.service.DataBaseServiceImpl;
-import org.sozinx.service.EditQuestionService;
-import org.sozinx.service.EditQuestionServiceImpl;
+import org.sozinx.service.*;
 
 import java.io.IOException;
 import java.util.Objects;
 
 
 @WebFilter("/delete/*")
+@SuppressWarnings("unused")
 public class DeleteQuestionFilter implements Filter {
     private DataBaseService manager;
-    private EditQuestionService service;
+    private DeleteQuestionService service;
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         manager = DataBaseServiceImpl.getInstance();
-        service = EditQuestionServiceImpl.getInstance();
+        service = DeleteQuestionServiceImpl.getInstance();
     }
 
     @Override

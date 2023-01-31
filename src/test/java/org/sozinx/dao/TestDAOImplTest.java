@@ -72,4 +72,10 @@ class TestDAOImplTest {
         assertEquals("Changed subject", checkingTest.getSubject());
         assertEquals(97, checkingTest.getTime());
     }
+    @Test
+    @Order(7)
+    void deleteTestById() {
+        org.sozinx.model.Test checkingTest = service.getTestManager().getLastAddedTestByOwner(userForTest);
+        assertTrue(service.getTestManager().deleteTestById(checkingTest.getId()));
+    }
 }

@@ -26,6 +26,9 @@ public class QueryConst {
     public static final String DELETE_LOG_BY_ANSWER = "DELETE FROM log WHERE answer = ?;";
     public static final String DELETE_LOG_BY_QUESTION = "DELETE FROM log WHERE question = ?;";
     public static final String DELETE_LOG_BY_USER = "DELETE FROM log WHERE user = ?;";
+    public static final String GET_SUM_OF_POINTS = "SELECT SUM(answer.correctness) AS sum FROM answer JOIN log ON log.answer =answer.id WHERE test = ? AND user = ?;";
+    public static final String GET_COUNT_OF_ANSWERS = "SELECT COUNT(*) AS count FROM answer JOIN question ON answer.question = question.id JOIN test ON question.test = test.id WHERE answer.correctness = 1 AND test = ?;";
+    public static final String GET_COUNT_OF_ZEROS = "SELECT COUNT(answer.correctness) AS count FROM answer JOIN log ON log.answer =answer.id WHERE test = ? AND user = ? AND answer.correctness != 1;";
     //QUESTION TABLE
     public static final String GET_QUESTION_BY_ID = "SELECT * FROM question WHERE id = ?;";
     public static final String GET_QUESTION_BY_QUESTION = "SELECT * FROM question WHERE question = ? AND test = ? AND id != ?;";
@@ -38,7 +41,7 @@ public class QueryConst {
     public static final String GET_RESULT_BY_TEST = "SELECT * FROM result WHERE test = ?;";
     public static final String GET_RESULT_BY_USER = "SELECT * FROM result WHERE user = ?;";
     public static final String GET_RESULT_BY_USER_AND_TEST = "SELECT * FROM result WHERE user = ? AND test = ?;";
-    public static final String ADD_RESULT = "INSERT INTO result(user, test, created, result) VALUES (?, ?, ?, ?);";
+    public static final String ADD_RESULT = "INSERT INTO result(user, test, date, result) VALUES (?, ?, ?, ?);";
     public static final String UPDATE_RESULT = "UPDATE result SET result = ? WHERE id = ?;";
     public static final String DELETE_RESULT = "DELETE FROM result WHERE id = ?;";
     public static final String DELETE_RESULT_BY_USER = "DELETE FROM question WHERE user = ?;";
@@ -50,6 +53,7 @@ public class QueryConst {
     public static final String OPEN_TEST = "UPDATE test SET is_close = 1 WHERE id = ? AND is_close = 2;";
     public static final String ADD_POPULARITY = "UPDATE test SET finished = finished + 1 WHERE id = ?;";
     public static final String GET_LAST_ADDED_TEST_BY_OWNER = "SELECT * FROM test WHERE owner = ? ORDER BY id DESC LIMIT 1;";
+    public static final String DELETE_TEST_BY_ID = "DELETE FROM test WHERE id = ?;";
     //USER TABLE
     public static final String GET_USER_BY_ID = "SELECT * FROM user WHERE id = ?;";
     public static final String GET_USER_BY_EMAIL = "SELECT * FROM user WHERE email = ?;";

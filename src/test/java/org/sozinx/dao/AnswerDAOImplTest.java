@@ -21,7 +21,7 @@ class AnswerDAOImplTest {
     void setUp() {
         testAnswer = new ArrayList<>();
         service = DataBaseServiceImpl.getInstance();
-        questionForAnswer = service.getQuestionManager().getQuestionById(22);
+        questionForAnswer = service.getQuestionManager().getQuestionById(1);
         testAnswer.add(new Answer(0, "test1answer", 0, questionForAnswer));
         testAnswer.add(new Answer(0, "test2answer", 1, questionForAnswer));
         testAnswer.add(new Answer(0, "test3answer", 0, questionForAnswer));

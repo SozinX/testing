@@ -15,10 +15,13 @@
               <a class="nav-link" href="/mytests?page=1">My tests</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">My grades</a>
+              <a class="nav-link" href="/create" >Create a test</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/create" >Create a test</a>
+              <a class="nav-link" href="/block" >Block user</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/unblock" >Unblock user</a>
             </li>
 
           </ul>

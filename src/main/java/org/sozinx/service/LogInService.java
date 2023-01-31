@@ -5,5 +5,8 @@ import org.sozinx.model.User;
 
 public interface LogInService {
     String inputIsCorrect(final HttpServletRequest req);
+
     User getCheckingUser();
+
+    void setAttributes(HttpServletRequest req);
 }

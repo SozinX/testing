@@ -2,6 +2,7 @@ package org.sozinx.dao;
 
 import org.sozinx.model.Answer;
 import org.sozinx.model.Question;
+import org.sozinx.model.Test;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface AnswerDAO {
     boolean deleteAnswer(Answer answer);
 
     boolean deleteAnswerByQuestion(Question question);
+
+    int getCountOfAnswers(Test test);
 }

@@ -23,6 +23,7 @@ public class BlockUserServiceImpl implements BlockUserService {
     private boolean emailIsCorrect(final HttpServletRequest req) {
         return manager.getUserManager().getUserByEmail(req.getParameter("blockEmail")) != null;
     }
+
     public static synchronized BlockUserServiceImpl getInstance() {
         if (service == null) return new BlockUserServiceImpl();
         return service;

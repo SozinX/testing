@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface AddTestService {
     void insertData(final HttpServletRequest req);
+
     String validationMessage(final HttpServletRequest req);
-    public void setLastAddedTest(HttpServletRequest req);
+
+    void setLastAddedTest(HttpServletRequest req);
 }

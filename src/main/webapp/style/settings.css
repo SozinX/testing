@@ -98,3 +98,11 @@ select:focus{
         line-height: 18px;
     }
 }
+.word-wrap{
+    word-wrap: break-word;
+    padding-top: 1vh;
+    margin-left: 3vh;
+}
+#answer{
+word-wrap: break-word;
+}

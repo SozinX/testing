@@ -3,10 +3,7 @@ package org.sozinx.dao;
 import org.sozinx.model.*;
 import org.sozinx.service.ConnectionService;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -73,7 +70,7 @@ public class LogDAOImpl implements LogDAO {
     }
 
     @Override
-    public boolean addLog(Log log) {
+    public void addLog(Log log) {
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
@@ -81,15 +78,17 @@ public class LogDAOImpl implements LogDAO {
             statement.setLong(1, log.getUser().getId());
             statement.setLong(2, log.getTest().getId());
             statement.setLong(3, log.getQuestion().getId());
-            statement.setLong(4, log.getAnswer().getId());
+            if (log.getAnswer() == null) {
+                statement.setNull(4, Types.NULL);
+            } else {
+                statement.setLong(4, log.getAnswer().getId());
+            }
             statement.executeUpdate();
-            return true;
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
         } finally {
             ConnectionService.close(connection);
         }
-        return false;
     }
 
     @Override
@@ -141,5 +140,47 @@ public class LogDAOImpl implements LogDAO {
             ConnectionService.close(connection);
         }
         return false;
+    }
+
+    @Override
+    public int getSumOfPoints(Test test, User user) {
+        int sum = 0;
+        Connection connection = ConnectionService.getConnection();
+        try {
+            assert connection != null;
+            PreparedStatement statement = connection.prepareStatement(GET_SUM_OF_POINTS);
+            statement.setLong(1, test.getId());
+            statement.setLong(2, user.getId());
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                sum = resultSet.getInt("sum");
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.INFO, "Query failed...");
+        } finally {
+            ConnectionService.close(connection);
+        }
+        return sum;
+    }
+
+    @Override
+    public int getCountOfZeros(Test test, User user) {
+        int count = 0;
+        Connection connection = ConnectionService.getConnection();
+        try {
+            assert connection != null;
+            PreparedStatement statement = connection.prepareStatement(GET_COUNT_OF_ZEROS);
+            statement.setLong(1, test.getId());
+            statement.setLong(2, user.getId());
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                count = resultSet.getInt("count");
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.INFO, "Query failed...");
+        } finally {
+            ConnectionService.close(connection);
+        }
+        return count;
     }
 }

@@ -240,13 +240,4 @@ public class EditQuestionServiceImpl implements EditQuestionService {
         deleteAnswers(req);
     }
 
-    //Remove question with his answers from database
-    public void deleteQuestionAndAnswers(HttpServletRequest req) {
-        String page = req.getParameter("question");
-        Question question = getQuestion(req);
-        if (Objects.equals(page, "") || page == null || page.equals("0")) {
-            manager.getAnswerManager().deleteAnswerByQuestion(question);
-            manager.getQuestionManager().deleteQuestion(question);
-        }
-    }
 }

@@ -409,4 +409,21 @@ public class TestDAOImpl implements TestDAO {
         }
         return false;
     }
+
+    @Override
+    public boolean deleteTestById(long id) {
+        Connection connection = ConnectionService.getConnection();
+        try {
+            assert connection != null;
+            PreparedStatement statement = connection.prepareStatement(DELETE_TEST_BY_ID);
+            statement.setLong(1, id);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+        } finally {
+            ConnectionService.close(connection);
+        }
+        return false;
+    }
 }

@@ -10,7 +10,7 @@ public interface LogDAO {
 
     List<Log> getLogByTest(Test test);
 
-    boolean addLog(Log log);
+    void addLog(Log log);
 
     boolean deleteLogByQuestion(Question question);
 
@@ -18,5 +18,8 @@ public interface LogDAO {
 
     boolean deleteLogByUser(User user);
 
+    int getSumOfPoints(Test test, User user);
+
+    int getCountOfZeros(Test test, User user);
 
 }

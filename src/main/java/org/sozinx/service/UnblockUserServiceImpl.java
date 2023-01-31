@@ -17,6 +17,7 @@ public class UnblockUserServiceImpl implements UnblockUserService {
     private static UnblockUserServiceImpl service;
 
     private Block blockRecord;
+
     public UnblockUserServiceImpl() {
         manager = DataBaseServiceImpl.getInstance();
     }
@@ -24,6 +25,7 @@ public class UnblockUserServiceImpl implements UnblockUserService {
     private boolean emailIsCorrect(final HttpServletRequest req) {
         return manager.getUserManager().getUserByEmail(req.getParameter("unblockEmail")) != null;
     }
+
     public static synchronized UnblockUserServiceImpl getInstance() {
         if (service == null) return new UnblockUserServiceImpl();
         return service;

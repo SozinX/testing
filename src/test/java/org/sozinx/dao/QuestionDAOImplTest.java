@@ -17,8 +17,7 @@ class QuestionDAOImplTest {
     @BeforeEach
     void setUp() {
         service = DataBaseServiceImpl.getInstance();
-        testForQuestion = service.getTestManager().getLastAddedTestByOwner(
-                service.getUserManager().getUserByEmail("testingtest125323734@gmail.com"));
+        testForQuestion = service.getTestManager().getTestById(1);
         testQuestion = new Question(0, "Test question", testForQuestion, service.getTypeManager().getTypeById(1));
     }
 
