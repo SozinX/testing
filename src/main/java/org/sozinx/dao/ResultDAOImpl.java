@@ -1,5 +1,7 @@
 package org.sozinx.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sozinx.model.Result;
 import org.sozinx.model.Test;
 import org.sozinx.model.User;
@@ -11,13 +13,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 import static org.sozinx.constant.QueryConst.*;
 
 public class ResultDAOImpl implements ResultDAO {
-    private static final Logger LOGGER = Logger.getLogger(String.valueOf(ResultDAOImpl.class));
+    private static final Logger LOGGER = LogManager.getLogger(String.valueOf(ResultDAOImpl.class));
     private final UserDAO userManager;
     private final TestDAO testManager;
 
@@ -40,7 +41,7 @@ public class ResultDAOImpl implements ResultDAO {
                         user, testManager.getTestById(resultSet.getLong("test"))));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query getResultByUser failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -61,7 +62,7 @@ public class ResultDAOImpl implements ResultDAO {
                         userManager.getUserById(resultSet.getInt("user")), test));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query getResultByTest failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -83,7 +84,7 @@ public class ResultDAOImpl implements ResultDAO {
                         resultSet.getInt("result"), user, test);
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query getResultByUserAndTest failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -103,7 +104,7 @@ public class ResultDAOImpl implements ResultDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info("Query addResult failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -120,7 +121,7 @@ public class ResultDAOImpl implements ResultDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query deleteResult failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -138,7 +139,7 @@ public class ResultDAOImpl implements ResultDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query updateResult failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -155,7 +156,7 @@ public class ResultDAOImpl implements ResultDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query deleteResultByUser failed...");
         } finally {
             ConnectionService.close(connection);
         }

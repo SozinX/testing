@@ -6,13 +6,12 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class ConnectionService {
-    private static final Logger LOGGER = Logger.getLogger(String.valueOf(ConnectionService.class));
-
+    private static final Logger LOGGER = LogManager.getLogger(String.valueOf(ConnectionService.class));
     private static final HikariConfig config = new HikariConfig();
     private static final HikariDataSource dataSource;
 
@@ -26,6 +25,7 @@ public class ConnectionService {
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
         dataSource = new HikariDataSource(config);
+        LOGGER.info("Config successfully created...");
     }
 
     private ConnectionService() {
@@ -35,7 +35,7 @@ public class ConnectionService {
         try {
             return dataSource.getConnection();
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Connection failed... {0}", e.toString());
+            LOGGER.info("Connection failed... ");
             return null;
         }
     }
@@ -45,7 +45,7 @@ public class ConnectionService {
             try {
                 closeable.close();
             } catch (Exception e) {
-                LOGGER.log(Level.INFO, "Something went wrong after closing try...");
+                LOGGER.info("Something went wrong after closing try...");
             }
         }
     }

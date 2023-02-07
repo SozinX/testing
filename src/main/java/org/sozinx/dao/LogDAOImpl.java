@@ -1,18 +1,18 @@
 package org.sozinx.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sozinx.model.*;
 import org.sozinx.service.ConnectionService;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.sozinx.constant.QueryConst.*;
 
 public class LogDAOImpl implements LogDAO {
-    private static final Logger LOGGER = Logger.getLogger(String.valueOf(ResultDAOImpl.class));
+    private static final Logger LOGGER = LogManager.getLogger(String.valueOf(ResultDAOImpl.class));
     private final UserDAO userManager;
     private final TestDAO testManager;
     private final AnswerDAO answerManager;
@@ -40,7 +40,7 @@ public class LogDAOImpl implements LogDAO {
                         answerManager.getAnswerById(resultSet.getLong("answer"))));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info( "Query getLogByUser failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -62,7 +62,7 @@ public class LogDAOImpl implements LogDAO {
                         answerManager.getAnswerById(resultSet.getLong("answer"))));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info( "Query getLogByTest failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -85,7 +85,7 @@ public class LogDAOImpl implements LogDAO {
             }
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info( "Query addLog failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -101,7 +101,7 @@ public class LogDAOImpl implements LogDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info( "Query deleteLogByQuestion failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -118,7 +118,7 @@ public class LogDAOImpl implements LogDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info( "Query deleteLogByAnswer failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -135,7 +135,7 @@ public class LogDAOImpl implements LogDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info( "Query deleteLogByUser failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -156,7 +156,7 @@ public class LogDAOImpl implements LogDAO {
                 sum = resultSet.getInt("sum");
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info( "Query getSumOfPoints failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -177,7 +177,7 @@ public class LogDAOImpl implements LogDAO {
                 count = resultSet.getInt("count");
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info( "Query getCountOfZeros failed...");
         } finally {
             ConnectionService.close(connection);
         }

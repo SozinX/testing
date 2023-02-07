@@ -1,5 +1,7 @@
 package org.sozinx.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sozinx.model.Answer;
 import org.sozinx.model.Question;
 import org.sozinx.model.Test;
@@ -11,13 +13,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.sozinx.constant.QueryConst.*;
 
 public class AnswerDAOImpl implements AnswerDAO {
-    private static final Logger LOGGER = Logger.getLogger(String.valueOf(UserDAOImpl.class));
+    private static final Logger LOGGER = LogManager.getLogger(String.valueOf(UserDAOImpl.class));
     private final QuestionDAO questionManager;
 
     public AnswerDAOImpl() {
@@ -38,7 +38,7 @@ public class AnswerDAOImpl implements AnswerDAO {
                         resultSet.getInt("correctness"), questionManager.getQuestionById(resultSet.getLong("question")));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info( "Query getAnswerById failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -59,7 +59,7 @@ public class AnswerDAOImpl implements AnswerDAO {
                         resultSet.getInt("correctness"), question));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info( "Query getAnswerByQuestion failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -78,7 +78,7 @@ public class AnswerDAOImpl implements AnswerDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info( "Query addAnswer failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -104,7 +104,7 @@ public class AnswerDAOImpl implements AnswerDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info( "Query updateAnswer failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -121,7 +121,7 @@ public class AnswerDAOImpl implements AnswerDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info( "Query deleteAnswer failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -138,7 +138,7 @@ public class AnswerDAOImpl implements AnswerDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info( "Query deleteAnswerByQuestion failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -158,7 +158,7 @@ public class AnswerDAOImpl implements AnswerDAO {
                 count = resultSet.getInt("count");
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info( "Query getCountOfAnswers failed...");
         } finally {
             ConnectionService.close(connection);
         }

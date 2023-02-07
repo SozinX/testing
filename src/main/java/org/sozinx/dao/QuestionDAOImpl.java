@@ -1,5 +1,7 @@
 package org.sozinx.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sozinx.model.Question;
 import org.sozinx.model.Test;
 import org.sozinx.service.ConnectionService;
@@ -10,13 +12,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.sozinx.constant.QueryConst.*;
 
 public class QuestionDAOImpl implements QuestionDAO {
-    private static final Logger LOGGER = Logger.getLogger(String.valueOf(UserDAOImpl.class));
+    private static final Logger LOGGER = LogManager.getLogger(String.valueOf(UserDAOImpl.class));
     private final TestDAO testManager;
     private final TypeDAO typeManager;
 
@@ -39,7 +39,7 @@ public class QuestionDAOImpl implements QuestionDAO {
                         testManager.getTestById(resultSet.getInt("test")), typeManager.getTypeById(resultSet.getInt("type")));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query getQuestionById failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -61,7 +61,7 @@ public class QuestionDAOImpl implements QuestionDAO {
                         testManager.getTestById(resultSet.getInt("test")), typeManager.getTypeById(resultSet.getInt("type")));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info("Query getQuestionByName failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -82,7 +82,7 @@ public class QuestionDAOImpl implements QuestionDAO {
                         test, typeManager.getTypeById(resultSet.getInt("type"))));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query getQuestionByTest failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -104,7 +104,7 @@ public class QuestionDAOImpl implements QuestionDAO {
                         test, typeManager.getTypeById(resultSet.getInt("type")));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query getLastQuestionByTest failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -123,7 +123,7 @@ public class QuestionDAOImpl implements QuestionDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info("Query addQuestion failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -149,7 +149,7 @@ public class QuestionDAOImpl implements QuestionDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query updateQuestion failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -166,7 +166,7 @@ public class QuestionDAOImpl implements QuestionDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info("Query deleteQuestion failed...");
         } finally {
             ConnectionService.close(connection);
         }

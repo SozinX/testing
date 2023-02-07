@@ -28,6 +28,11 @@
          </ul>
           <div class="collapse navbar-collapse ml-5" id="navbarNav">
                       <ul class="navbar-nav ml-auto">
+                      <li class="nav-item">
+                           <form action="/lang">
+                                  <button class="btn btn-light"><fmt:message key="Lang" /></button>
+                           </form>
+                            </li>
                              <li class="nav-item dropdown">
                                   <a id="navbarDropdownMenuLink-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><h5 class="nav-link dropdown-toggle"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                                                                                                                                                                             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
