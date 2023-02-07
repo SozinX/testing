@@ -1,6 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@include file="../template/base.jsp"%>
 <style><%@include file="../style/index.css"%></style>
 <%@include file="../template/sidebarForOwner.jsp"%>
@@ -19,13 +17,13 @@
                  <c:choose>
                     <c:when test="${requestScope.currentPage <= '1'}">
                             <li class="page-item disabled">
-                            <a class="page-link" href="#">Previous</a>
+                            <a class="page-link" href="#"><fmt:message key="Prev" /></a>
                              </li>
                             <br />
                     </c:when>
                       <c:otherwise>
                               <li class="page-item">
-                                <a class="page-link" href="/mytests?page=${prev}${requestScope.address}">Previous</a>
+                                <a class="page-link" href="/mytests?page=${prev}${requestScope.address}"><fmt:message key="Prev" /></a>
                                </li>
                               <br />
                       </c:otherwise>
@@ -33,13 +31,13 @@
                     <c:choose>
                         <c:when test="${requestScope.currentPage >= requestScope.pages}">
                                 <li class="page-item disabled">
-                                      <a class="page-link" href="#">Next</a>
+                                      <a class="page-link" href="#"><fmt:message key="Next" /></a>
                                     </li>
                                 <br />
                         </c:when>
                           <c:otherwise>
                                   <li class="page-item">
-                                    <a class="page-link" href="/mytests?page=${next}${requestScope.address}">Next</a>
+                                    <a class="page-link" href="/mytests?page=${next}${requestScope.address}"><fmt:message key="Next" /></a>
                                    </li>
                                   <br />
                           </c:otherwise>
@@ -92,13 +90,13 @@
                               <c:choose>
                                  <c:when test="${requestScope.currentPage <= '1'}">
                                          <li class="page-item disabled">
-                                         <a class="page-link" href="#">Previous</a>
+                                         <a class="page-link" href="#"><fmt:message key="Prev" /></a>
                                           </li>
                                          <br />
                                  </c:when>
                                    <c:otherwise>
                                            <li class="page-item">
-                                             <a class="page-link" href="/mytests?page=${prev}${requestScope.address}">Previous</a>
+                                             <a class="page-link" href="/mytests?page=${prev}${requestScope.address}"><fmt:message key="Prev" /></a>
                                             </li>
                                            <br />
                                    </c:otherwise>
@@ -106,13 +104,13 @@
                                  <c:choose>
                                      <c:when test="${requestScope.currentPage >= requestScope.pages}">
                                              <li class="page-item disabled">
-                                                   <a class="page-link" href="#">Next</a>
+                                                   <a class="page-link" href="#"><fmt:message key="Next" /></a>
                                                  </li>
                                              <br />
                                      </c:when>
                                        <c:otherwise>
                                                <li class="page-item">
-                                                 <a class="page-link" href="/mytests?page=${next}${requestScope.address}">Next</a>
+                                                 <a class="page-link" href="/mytests?page=${next}${requestScope.address}"><fmt:message key="Next" /></a>
                                                 </li>
                                                <br />
                                        </c:otherwise>

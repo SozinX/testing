@@ -3,6 +3,7 @@ package org.sozinx.servlet.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.sozinx.service.TestingService;
@@ -26,6 +27,16 @@ public class MainFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         final HttpServletRequest req = (HttpServletRequest) servletRequest;
         final HttpServletResponse resp = (HttpServletResponse) servletResponse;
+        for(int i = 0; i < req.getCookies().length; i++){
+            if(Objects.equals(req.getCookies()[i].getName(), "language")){
+                String language = req.getCookies()[i].getValue();
+                if(language == null){
+                    resp.addCookie(new Cookie("language", "ua"));
+
+                }
+                req.setAttribute("language", req.getCookies()[i].getValue());
+            }
+        }
         Object attribute = req.getSession().getAttribute("testId");
         if (attribute != null) {
             if (!Objects.equals(attribute.toString(), "") && !Objects.equals(attribute.toString(), service.getTestIdFromUri(req))) {

@@ -1,6 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@include file="../template/base.jsp"%>
 <style><%@include file="../style/signup.css"%></style>
 <style><%@include file="../style/settings.css"%></style>
@@ -23,7 +21,7 @@
                        <input id="seconds" value="${sessionScope.seconds}" hidden>
                        <input name="questionId" value="${requestScope.currentQuestion.id}" hidden>
                           <div class="mb-3 border-bottom">
-                          <label for="exampleFormControlTextarea1" class="form-label">Question</label>
+                          <label for="exampleFormControlTextarea1" class="form-label"><fmt:message key="TestingQuestion" /></label>
                             <h4 class="word-wrap">${requestScope.currentQuestion.question}</h4>
                           </div>
                           <div class="form-outline mb-2">
@@ -47,14 +45,14 @@
                                              </div>
                                          </div>
                                       </c:forEach>
-                                      <h5 class="pt-4 d-flex align-items-center justify-content-center me-5">(Select two or more)</h5>
+                                      <h5 class="pt-4 d-flex align-items-center justify-content-center me-5"><fmt:message key="TestingInstruction" /></h5>
                                 </c:otherwise>
                              </c:choose>
 
                           </div>
                             <div class="py-3 d-flex align-items-center justify-content-center me-5">
-                                  <button class="btn btn-success mr-3">Save answer and go to next question</button>
-                                  <button type='button' class="btn border btn-secondary" onclick="location.href = '/result/${requestScope.currentQuestion.test.id}';">Finish test</button>
+                                  <button class="btn btn-success mr-3"><fmt:message key="TestingConfirm" /></button>
+                                  <button type='button' class="btn border btn-secondary" onclick="location.href = '/result/${requestScope.currentQuestion.test.id}';"><fmt:message key="TestingFinish" /></button>
                             </div>
 
                       </form>
