@@ -5,6 +5,8 @@ import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.sozinx.service.CookiesService;
+import org.sozinx.service.CookiesServiceImpl;
 import org.sozinx.service.TestingService;
 import org.sozinx.service.TestingServiceImpl;
 
@@ -15,20 +17,23 @@ import java.util.Objects;
 @WebFilter("/*")
 @SuppressWarnings("unused")
 public class MainFilter implements Filter {
-    private TestingService service;
+    private TestingService testingService;
+    private CookiesService cookiesService;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        service = TestingServiceImpl.getInstance();
+        testingService = TestingServiceImpl.getInstance();
+        cookiesService = CookiesServiceImpl.getInstance();
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         final HttpServletRequest req = (HttpServletRequest) servletRequest;
         final HttpServletResponse resp = (HttpServletResponse) servletResponse;
+        cookiesService.filterCheckLanguage(req, resp);
         Object attribute = req.getSession().getAttribute("testId");
         if (attribute != null) {
-            if (!Objects.equals(attribute.toString(), "") && !Objects.equals(attribute.toString(), service.getTestIdFromUri(req))) {
+            if (!Objects.equals(attribute.toString(), "") && !Objects.equals(attribute.toString(), testingService.getTestIdFromUri(req))) {
                 resp.sendRedirect("/testing/" + req.getSession().getAttribute("testId") + "?question=" + req.getSession().getAttribute("questionNumber"));
                 return;
             }

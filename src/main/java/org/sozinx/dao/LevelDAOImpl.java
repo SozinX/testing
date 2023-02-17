@@ -1,5 +1,7 @@
 package org.sozinx.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sozinx.model.Level;
 import org.sozinx.service.ConnectionService;
 
@@ -7,13 +9,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Logger;
 
 import static org.sozinx.constant.QueryConst.GET_LEVEL_BY_ID;
 
 
 public class LevelDAOImpl implements LevelDAO {
-    private static final Logger LOGGER = Logger.getLogger(String.valueOf(RoleDAOImpl.class));
+    private static final Logger LOGGER = LogManager.getLogger(String.valueOf(RoleDAOImpl.class));
 
     @Override
     public Level getLevelById(int id) {
@@ -28,7 +29,7 @@ public class LevelDAOImpl implements LevelDAO {
                 level = new Level(resultSet.getInt(1), resultSet.getString(2));
             }
         } catch (SQLException e) {
-            LOGGER.log(java.util.logging.Level.INFO, "Query failed...");
+            LOGGER.info("Query getLevelById failed...");
         } finally {
             ConnectionService.close(connection);
         }

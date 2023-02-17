@@ -1,5 +1,7 @@
 package org.sozinx.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sozinx.model.User;
 import org.sozinx.service.ConnectionService;
 
@@ -7,13 +9,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.sozinx.constant.QueryConst.*;
 
 public class UserDAOImpl implements UserDAO {
-    private static final Logger LOGGER = Logger.getLogger(String.valueOf(UserDAOImpl.class));
+    private static final Logger LOGGER = LogManager.getLogger(String.valueOf(UserDAOImpl.class));
     private final RoleDAO manager;
 
     public UserDAOImpl() {
@@ -35,7 +35,7 @@ public class UserDAOImpl implements UserDAO {
                         resultSet.getString("registration"), manager.getRoleById(resultSet.getInt("role")));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query getUserById failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -57,7 +57,7 @@ public class UserDAOImpl implements UserDAO {
                         resultSet.getString("registration"), manager.getRoleById(resultSet.getInt("role")));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query getUserByEmail failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -78,7 +78,7 @@ public class UserDAOImpl implements UserDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info("Query addUser failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -95,7 +95,7 @@ public class UserDAOImpl implements UserDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query deleteUser failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -125,7 +125,7 @@ public class UserDAOImpl implements UserDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query updateUser failed...");
         } finally {
             ConnectionService.close(connection);
         }

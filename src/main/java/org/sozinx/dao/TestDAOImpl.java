@@ -1,5 +1,7 @@
 package org.sozinx.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sozinx.model.Test;
 import org.sozinx.model.User;
 import org.sozinx.service.ConnectionService;
@@ -11,13 +13,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.sozinx.constant.QueryConst.*;
 
 public class TestDAOImpl implements TestDAO {
-    private static final Logger LOGGER = Logger.getLogger(String.valueOf(UserDAOImpl.class));
+    private static final Logger LOGGER = LogManager.getLogger(String.valueOf(UserDAOImpl.class));
     private final UserDAO userManager;
     private final LevelDAO levelManager;
 
@@ -43,7 +43,7 @@ public class TestDAOImpl implements TestDAO {
                         levelManager.getLevelById(resultSet.getInt("level")));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query getTestById failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -66,7 +66,7 @@ public class TestDAOImpl implements TestDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info("Query addTest failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -98,7 +98,7 @@ public class TestDAOImpl implements TestDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info("Query updateTest failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -116,7 +116,7 @@ public class TestDAOImpl implements TestDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info("Query addPopularity failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -140,7 +140,7 @@ public class TestDAOImpl implements TestDAO {
                         levelManager.getLevelById(resultSet.getInt("level")));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query getLastAddedTestByOwner failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -199,7 +199,7 @@ public class TestDAOImpl implements TestDAO {
                         levelManager.getLevelById(resultSet.getInt("level"))));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info("Query getFilterResult failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -250,7 +250,7 @@ public class TestDAOImpl implements TestDAO {
                 numberOfTests = Integer.parseInt(resultSet.getString("count"));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info("Query getAllFilterTests failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -309,7 +309,7 @@ public class TestDAOImpl implements TestDAO {
                         levelManager.getLevelById(resultSet.getInt("level"))));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info("Query getFilterResultForOwner failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -360,7 +360,7 @@ public class TestDAOImpl implements TestDAO {
                 numbersOfTests = Integer.parseInt(resultSet.getString("count"));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info("Query getAllFilterTestsForOwner failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -386,7 +386,7 @@ public class TestDAOImpl implements TestDAO {
                         levelManager.getLevelById(resultSet.getInt("level")));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed... {0}", e.toString());
+            LOGGER.info("Query getTestByNameAndOwner failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -403,7 +403,7 @@ public class TestDAOImpl implements TestDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info("Query openTest failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -420,7 +420,7 @@ public class TestDAOImpl implements TestDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info("Query deleteTestById failed...");
         } finally {
             ConnectionService.close(connection);
         }

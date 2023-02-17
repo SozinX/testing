@@ -1,5 +1,7 @@
 package org.sozinx.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sozinx.model.Block;
 import org.sozinx.model.User;
 import org.sozinx.service.ConnectionService;
@@ -10,14 +12,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 import static org.sozinx.constant.QueryConst.*;
 
 
 public class BlockDAOImpl implements BlockDAO {
-    private static final Logger LOGGER = Logger.getLogger(String.valueOf(RoleDAOImpl.class));
+    private static final Logger LOGGER = LogManager.getLogger(String.valueOf(RoleDAOImpl.class));
     private final UserDAO userManager;
 
     public BlockDAOImpl() {
@@ -39,7 +40,7 @@ public class BlockDAOImpl implements BlockDAO {
                         resultSet.getString("block"), resultSet.getString("unblock")));
             }
         } catch (SQLException e) {
-            LOGGER.log(java.util.logging.Level.INFO, "Query failed...");
+            LOGGER.info("Query getBlockByUser failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -58,7 +59,7 @@ public class BlockDAOImpl implements BlockDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info("Query blockUser failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -76,7 +77,7 @@ public class BlockDAOImpl implements BlockDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...{0}", e.toString());
+            LOGGER.info("Query unblockUser failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -93,7 +94,7 @@ public class BlockDAOImpl implements BlockDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query deleteBlockByUser failed...");
         } finally {
             ConnectionService.close(connection);
         }

@@ -1,5 +1,7 @@
 package org.sozinx.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sozinx.model.Role;
 import org.sozinx.service.ConnectionService;
 
@@ -7,13 +9,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.sozinx.constant.QueryConst.GET_ROLE_BY_ID;
 
 public class RoleDAOImpl implements RoleDAO {
-    private static final Logger LOGGER = Logger.getLogger(String.valueOf(RoleDAOImpl.class));
+    private static final Logger LOGGER = LogManager.getLogger(String.valueOf(RoleDAOImpl.class));
 
     @Override
     public Role getRoleById(int id) {
@@ -28,7 +28,7 @@ public class RoleDAOImpl implements RoleDAO {
                 role = new Role(resultSet.getInt(1), resultSet.getString(2));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Query failed...");
+            LOGGER.info("Query getRoleById failed...");
         } finally {
             ConnectionService.close(connection);
         }

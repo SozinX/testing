@@ -1,5 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@include file="../template/base.jsp"%>
 <style><%@include file="../style/login.css"%></style>
 <head>
@@ -15,25 +14,25 @@
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
         <form action="/login" method="post">
           <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-            <h1>Log in</h1>
+            <h1><fmt:message key="LoginTitle" /></h1>
           </div>
 
           <div class="form-outline mb-4">
               <input name="email" type="text" id="form1Example13" class="form-control form-control-lg" />
-              <label class="form-label" for="form1Example13">Email address</label>
+              <label class="form-label" for="form1Example13"><fmt:message key="LoginEmail" /></label>
            </div>
 
            <div class="form-outline mb-4">
               <input name="password" type="password" id="form1Example23" class="form-control form-control-lg" />
-              <label class="form-label" for="form1Example23">Password</label>
+              <label class="form-label" for="form1Example23"><fmt:message key="LoginPassword" /></label>
            </div>
 
 
           <div class="d-flex justify-content-around align-items-center mb-4">
-             <a href="/signup">Donʼt have an account?</a>
+             <a href="/signup"><fmt:message key="LoginAnswer" /></a>
           </div>
           <span id="error" class="d-flex justify-content-around align-items-center mb-1 text-danger">${requestScope.message}</span>
-          <button id="btn" type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
+          <button id="btn" type="submit" class="btn btn-primary btn-lg btn-block"><fmt:message key="LoginIn" /></button>
         </form>
       </div>
     </div>

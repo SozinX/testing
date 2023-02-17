@@ -1,5 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${requestScope.language}"/>
+<fmt:setBundle basename="language"/>
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,15 +16,15 @@
 <header>
   <c:choose>
       <c:when test="${sessionScope.role == null}">
-          <%@include file="./navENNN.jsp"%>
+          <%@include file="./navNN.jsp"%>
           <br />
       </c:when>
       <c:when test="${sessionScope.role == 'Confirmed teacher'}">
-                    <%@include file="./navENT.jsp"%>
+                    <%@include file="./navT.jsp"%>
                     <br />
       </c:when>
       <c:otherwise>
-           <%@include file="./navENS.jsp"%>
+           <%@include file="./navS.jsp"%>
           <br />
       </c:otherwise>
   </c:choose>
