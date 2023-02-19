@@ -17,6 +17,7 @@ import java.util.Objects;
 public class DeleteQuestionFilter implements Filter {
     private DataBaseService manager;
     private DeleteQuestionService service;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         manager = DataBaseServiceImpl.getInstance();

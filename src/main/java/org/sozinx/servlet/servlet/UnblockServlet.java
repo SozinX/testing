@@ -17,6 +17,7 @@ import static org.sozinx.constant.AddressConst.UNBLOCKING_SYSTEM;
 public class UnblockServlet extends HttpServlet {
 
     private UnblockUserService service;
+
     @Override
     public void init() throws ServletException {
         service = UnblockUserServiceImpl.getInstance();
@@ -30,11 +31,10 @@ public class UnblockServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String inputValid = service.inputIsCorrect(req);
-        if(inputValid != null){
+        if (inputValid != null) {
             req.setAttribute("message", inputValid);
             doGet(req, resp);
-        }
-        else {
+        } else {
             service.unblockUser(req);
             resp.sendRedirect("/unblock");
         }

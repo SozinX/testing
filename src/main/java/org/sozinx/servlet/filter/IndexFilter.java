@@ -10,6 +10,7 @@ import java.io.IOException;
 
 
 @WebFilter("/")
+@SuppressWarnings("unused")
 public class IndexFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

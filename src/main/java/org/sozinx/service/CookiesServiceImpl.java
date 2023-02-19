@@ -6,9 +6,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.Objects;
 
-public class CookiesServiceImpl implements CookiesService{
+public class CookiesServiceImpl implements CookiesService {
     @SuppressWarnings("unused")
     private static CookiesServiceImpl service;
+
     public static synchronized CookiesServiceImpl getInstance() {
         if (service == null) return new CookiesServiceImpl();
         return service;

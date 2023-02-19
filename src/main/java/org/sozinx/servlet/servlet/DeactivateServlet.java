@@ -11,6 +11,7 @@ import org.sozinx.service.DataBaseServiceImpl;
 import java.io.IOException;
 
 @WebServlet("/deactivate")
+@SuppressWarnings("unused")
 public class DeactivateServlet extends HttpServlet {
     private DataBaseService service;
 

@@ -32,6 +32,9 @@ public class SignUpServiceImpl implements SignUpService {
     //Compare email with his regex
     private static boolean emailIsValid(final HttpServletRequest req) {
         final String email = req.getParameter("email");
+        if (email == null) {
+            return false;
+        }
         return Pattern.compile(EMAIL)
                 .matcher(email)
                 .matches();
@@ -40,6 +43,9 @@ public class SignUpServiceImpl implements SignUpService {
     //Compare password with his regex
     private static boolean passwordIsValid(final HttpServletRequest req) {
         final String password = req.getParameter("password");
+        if (password == null) {
+            return false;
+        }
         return Pattern.compile(PASSWORD)
                 .matcher(password)
                 .matches();

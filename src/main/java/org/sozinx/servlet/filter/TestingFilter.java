@@ -32,7 +32,7 @@ public class TestingFilter implements Filter {
             return;
         }
         int currentNumber = Integer.parseInt(String.valueOf(req.getSession().getAttribute("questionNumber")));
-        if(Integer.parseInt(req.getParameter("question")) != currentNumber){
+        if (Integer.parseInt(req.getParameter("question")) != currentNumber) {
             resp.sendRedirect("/testing/" + testId + "?question=" + currentNumber);
         }
         filterChain.doFilter(req, resp);

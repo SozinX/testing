@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 @WebFilter("/create")
+@SuppressWarnings("unused")
 public class AddTestFilter implements Filter {
 
     @Override

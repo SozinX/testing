@@ -17,6 +17,7 @@ import static org.sozinx.constant.AddressConst.BLOCKING_SYSTEM;
 public class BlockServlet extends HttpServlet {
 
     private BlockUserService service;
+
     @Override
     public void init() throws ServletException {
         service = BlockUserServiceImpl.getInstance();
@@ -30,11 +31,10 @@ public class BlockServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String inputValid = service.inputIsCorrect(req);
-        if(inputValid != null){
+        if (inputValid != null) {
             req.setAttribute("message", inputValid);
             doGet(req, resp);
-        }
-        else {
+        } else {
             service.blockUser(req);
             resp.sendRedirect("/block");
         }

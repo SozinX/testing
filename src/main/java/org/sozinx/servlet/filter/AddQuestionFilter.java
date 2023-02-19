@@ -14,8 +14,10 @@ import java.util.Objects;
 
 
 @WebFilter("/add/*")
+@SuppressWarnings("unused")
 public class AddQuestionFilter implements Filter {
     private DataBaseService service;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 

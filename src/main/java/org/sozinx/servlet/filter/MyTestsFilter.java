@@ -11,6 +11,7 @@ import java.util.Objects;
 
 
 @WebFilter("/mytests")
+@SuppressWarnings("unused")
 public class MyTestsFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

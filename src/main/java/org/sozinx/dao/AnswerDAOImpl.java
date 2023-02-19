@@ -38,7 +38,7 @@ public class AnswerDAOImpl implements AnswerDAO {
                         resultSet.getInt("correctness"), questionManager.getQuestionById(resultSet.getLong("question")));
             }
         } catch (SQLException e) {
-            LOGGER.info( "Query getAnswerById failed...");
+            LOGGER.info("Query getAnswerById failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -59,7 +59,7 @@ public class AnswerDAOImpl implements AnswerDAO {
                         resultSet.getInt("correctness"), question));
             }
         } catch (SQLException e) {
-            LOGGER.info( "Query getAnswerByQuestion failed...");
+            LOGGER.info("Query getAnswerByQuestion failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -78,7 +78,7 @@ public class AnswerDAOImpl implements AnswerDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.info( "Query addAnswer failed...");
+            LOGGER.info("Query addAnswer failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -104,7 +104,7 @@ public class AnswerDAOImpl implements AnswerDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.info( "Query updateAnswer failed...");
+            LOGGER.info("Query updateAnswer failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -121,7 +121,7 @@ public class AnswerDAOImpl implements AnswerDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.info( "Query deleteAnswer failed...");
+            LOGGER.info("Query deleteAnswer failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -138,7 +138,7 @@ public class AnswerDAOImpl implements AnswerDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.info( "Query deleteAnswerByQuestion failed...");
+            LOGGER.info("Query deleteAnswerByQuestion failed...");
         } finally {
             ConnectionService.close(connection);
         }
@@ -158,7 +158,7 @@ public class AnswerDAOImpl implements AnswerDAO {
                 count = resultSet.getInt("count");
             }
         } catch (SQLException e) {
-            LOGGER.info( "Query getCountOfAnswers failed...");
+            LOGGER.info("Query getCountOfAnswers failed...");
         } finally {
             ConnectionService.close(connection);
         }

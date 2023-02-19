@@ -37,6 +37,9 @@ public class EditTestServiceImpl implements EditTestService {
     //Check comparison between time and his regex
     private static boolean timeIsValid(final HttpServletRequest req) {
         final String time = req.getParameter("test-time");
+        if (time == null) {
+            return false;
+        }
         return Pattern.compile(TIME)
                 .matcher(time)
                 .matches();

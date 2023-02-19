@@ -48,7 +48,7 @@ public class BlockDAOImpl implements BlockDAO {
     }
 
     @Override
-    public boolean blockUser(Block block) {
+    public void blockUser(Block block) {
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
@@ -57,17 +57,15 @@ public class BlockDAOImpl implements BlockDAO {
             statement.setLong(2, block.getStudent().getId());
             statement.setString(3, block.getBlock());
             statement.executeUpdate();
-            return true;
         } catch (SQLException e) {
             LOGGER.info("Query blockUser failed...");
         } finally {
             ConnectionService.close(connection);
         }
-        return false;
     }
 
     @Override
-    public boolean unblockUser(Block block, String unblock) {
+    public void unblockUser(Block block, String unblock) {
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
@@ -75,13 +73,11 @@ public class BlockDAOImpl implements BlockDAO {
             statement.setString(1, unblock);
             statement.setLong(2, block.getId());
             statement.executeUpdate();
-            return true;
         } catch (SQLException e) {
             LOGGER.info("Query unblockUser failed...");
         } finally {
             ConnectionService.close(connection);
         }
-        return false;
     }
 
     @Override
