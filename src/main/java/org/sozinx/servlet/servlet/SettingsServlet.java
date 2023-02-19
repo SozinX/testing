@@ -13,9 +13,11 @@ import java.io.IOException;
 import static org.sozinx.constant.AddressConst.SETTINGS_PAGE;
 
 @WebServlet("/settings")
+@SuppressWarnings("unused")
 public class SettingsServlet extends HttpServlet {
 
     private SettingsService service;
+
     @Override
     public void init() throws ServletException {
         service = SettingsServiceImpl.getInstance();
@@ -30,11 +32,10 @@ public class SettingsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF8");
         String validationMessage = service.validationMessage(req);
-        if(validationMessage != null){
+        if (validationMessage != null) {
             req.setAttribute("message", validationMessage);
             doGet(req, resp);
-        }
-        else {
+        } else {
             service.editData(req);
             resp.sendRedirect("/settings");
         }

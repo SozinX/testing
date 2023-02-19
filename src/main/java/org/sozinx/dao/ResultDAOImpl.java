@@ -92,7 +92,7 @@ public class ResultDAOImpl implements ResultDAO {
     }
 
     @Override
-    public boolean addResult(Result result) {
+    public void addResult(Result result) {
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
@@ -102,13 +102,11 @@ public class ResultDAOImpl implements ResultDAO {
             statement.setString(3, result.getDate());
             statement.setInt(4, result.getResult());
             statement.executeUpdate();
-            return true;
         } catch (SQLException e) {
             LOGGER.info("Query addResult failed...");
         } finally {
             ConnectionService.close(connection);
         }
-        return false;
     }
 
     @Override

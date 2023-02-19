@@ -8,9 +8,10 @@ import java.util.List;
 public interface BlockDAO {
     List<Block> getBlockByUser(User user);
 
-    boolean blockUser(Block block);
+    void blockUser(Block block);
 
-    boolean unblockUser(Block block, String unblock);
+    void unblockUser(Block block, String unblock);
 
+    @SuppressWarnings("unused")
     boolean deleteBlockByUser(User user);
 }

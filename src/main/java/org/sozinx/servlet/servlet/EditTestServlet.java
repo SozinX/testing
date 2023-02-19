@@ -7,18 +7,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.sozinx.service.EditTestService;
 import org.sozinx.service.EditTestServiceImpl;
-import org.sozinx.service.SettingsService;
-import org.sozinx.service.SettingsServiceImpl;
 
 import java.io.IOException;
 
 import static org.sozinx.constant.AddressConst.EDIT_TEST_PAGE;
-import static org.sozinx.constant.AddressConst.SETTINGS_PAGE;
 
 @WebServlet("/edit/*")
+@SuppressWarnings("unused")
 public class EditTestServlet extends HttpServlet {
 
     private EditTestService service;
+
     @Override
     public void init() throws ServletException {
         service = EditTestServiceImpl.getInstance();
@@ -34,11 +33,10 @@ public class EditTestServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF8");
         String validationMessage = service.validationMessage(req);
-        if(validationMessage != null){
+        if (validationMessage != null) {
             req.setAttribute("message", validationMessage);
             doGet(req, resp);
-        }
-        else {
+        } else {
             service.editData(req);
             resp.sendRedirect(req.getRequestURI());
         }

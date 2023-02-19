@@ -16,6 +16,7 @@ import java.util.Objects;
 
 
 @WebFilter("/change/*")
+@SuppressWarnings("unused")
 public class EditQuestionFilter implements Filter {
     private DataBaseService manager;
     private EditQuestionService service;

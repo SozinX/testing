@@ -13,10 +13,12 @@ import java.io.IOException;
 import static org.sozinx.constant.AddressConst.USER_TESTS_PAGE;
 
 @WebServlet("/mytests")
+@SuppressWarnings("unused")
 public class MyTestsServlet extends HttpServlet {
     private TestsByOwnerService service;
+
     @Override
-    public void init(){
+    public void init() {
         service = TestsByOwnerServiceImpl.getInstance();
     }
 

@@ -34,6 +34,9 @@ public class SettingsServiceImpl implements SettingsService {
     //Compare email with his regex
     private static boolean emailIsValid(final HttpServletRequest req) {
         final String email = req.getParameter("set-email");
+        if (email == null) {
+            return false;
+        }
         return Pattern.compile(EMAIL)
                 .matcher(email)
                 .matches();
@@ -51,12 +54,12 @@ public class SettingsServiceImpl implements SettingsService {
     //Compare password with his regex
     private static boolean passwordIsValid(final HttpServletRequest req) {
         final String password = req.getParameter("new-password");
-        if (password != null && !password.equals("")) {
-            return Pattern.compile(PASSWORD)
-                    .matcher(password)
-                    .matches();
+        if (password == null) {
+            return false;
         }
-        return true;
+        return Pattern.compile(PASSWORD)
+                .matcher(password)
+                .matches();
     }
 
     //Sum all validation method in one and get error messages

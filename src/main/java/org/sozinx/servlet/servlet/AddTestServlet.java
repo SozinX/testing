@@ -13,9 +13,11 @@ import java.io.IOException;
 import static org.sozinx.constant.AddressConst.ADD_TEST_PAGE;
 
 @WebServlet("/create")
+@SuppressWarnings("unused")
 public class AddTestServlet extends HttpServlet {
 
     private AddTestService service;
+
     @Override
     public void init() throws ServletException {
         service = AddTestServiceImpl.getInstance();
@@ -31,11 +33,10 @@ public class AddTestServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF8");
         String validationMessage = service.validationMessage(req);
-        if(validationMessage != null){
+        if (validationMessage != null) {
             req.setAttribute("message", validationMessage);
             doGet(req, resp);
-        }
-        else {
+        } else {
             service.insertData(req);
             resp.sendRedirect("/create");
         }

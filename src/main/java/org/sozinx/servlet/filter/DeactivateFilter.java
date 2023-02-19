@@ -10,6 +10,7 @@ import java.io.IOException;
 
 
 @WebFilter("/deactivate")
+@SuppressWarnings("unused")
 public class DeactivateFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

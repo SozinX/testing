@@ -72,6 +72,7 @@ class TestDAOImplTest {
         assertEquals("Changed subject", checkingTest.getSubject());
         assertEquals(97, checkingTest.getTime());
     }
+
     @Test
     @Order(7)
     void deleteTestById() {

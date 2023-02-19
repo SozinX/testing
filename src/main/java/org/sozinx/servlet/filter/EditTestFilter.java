@@ -14,8 +14,10 @@ import java.util.Objects;
 
 
 @WebFilter("/edit/*")
+@SuppressWarnings("unused")
 public class EditTestFilter implements Filter {
     private DataBaseService service;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 

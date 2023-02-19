@@ -11,11 +11,14 @@ import org.sozinx.service.TestsServiceImpl;
 import java.io.IOException;
 
 import static org.sozinx.constant.AddressConst.HOME_PAGE;
+
 @WebServlet("/tests")
+@SuppressWarnings("unused")
 public class TestsServlet extends HttpServlet {
     private TestsService service;
+
     @Override
-    public void init(){
+    public void init() {
         service = TestsServiceImpl.getInstance();
     }
 

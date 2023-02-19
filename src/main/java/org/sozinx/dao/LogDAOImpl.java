@@ -92,20 +92,18 @@ public class LogDAOImpl implements LogDAO {
     }
 
     @Override
-    public boolean deleteLogByQuestion(Question question) {
+    public void deleteLogByQuestion(Question question) {
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
             PreparedStatement statement = connection.prepareStatement(DELETE_LOG_BY_QUESTION);
             statement.setLong(1, question.getId());
             statement.executeUpdate();
-            return true;
         } catch (SQLException e) {
             LOGGER.info( "Query deleteLogByQuestion failed...");
         } finally {
             ConnectionService.close(connection);
         }
-        return false;
     }
 
     @Override
