@@ -3,10 +3,7 @@ package org.sozinx.service;
 import jakarta.servlet.http.HttpServletRequest;
 import org.sozinx.model.Test;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TestsByOwnerServiceImpl implements TestsByOwnerService {
@@ -24,14 +21,31 @@ public class TestsByOwnerServiceImpl implements TestsByOwnerService {
     }
 
     public double getCountOfPagesByOwner(HttpServletRequest req) {
-        double count = manager.getTestManager().getAllFilterTestsForOwner(req.getParameter("test-name"), req.getParameter("test-subject"),
-                req.getParameter("test-level"), req.getParameter("test-sort"), String.valueOf(req.getSession().getAttribute("id")), req.getParameter("test-order")) / 12;
+        Map<String, String> criteriaOfFilter = Collections.synchronizedMap(new HashMap<>());
+        criteriaOfFilter.put("name", req.getParameter("test-name"));
+        criteriaOfFilter.put("subject", req.getParameter("test-subject"));
+        criteriaOfFilter.put("level", req.getParameter("test-level"));
+        criteriaOfFilter.put("owner", String.valueOf(req.getSession().getAttribute("id")));
+        criteriaOfFilter.entrySet().stream().filter(criteria -> criteria.getValue() == null).forEach(criteria -> criteria.setValue(""));
+        double count = manager.getTestManager().getAllFilterTestsForOwner(criteriaOfFilter) / 12;
         return Math.ceil(count);
     }
 
     public List<Test> getTestsByOwner(HttpServletRequest req) {
-        return manager.getTestManager().getFilterResultForOwner(req.getParameter("test-name"), req.getParameter("test-subject"),
-                req.getParameter("test-level"), req.getParameter("test-sort"), req.getParameter("test-order"), String.valueOf(req.getSession().getAttribute("id")), req.getParameter("page"));
+        Map<String, String> criteriaOfFilter = Collections.synchronizedMap(new HashMap<>());
+        String orderColumn = req.getParameter("test-sort");
+        if(Objects.equals(orderColumn, "") || orderColumn == null){
+            orderColumn = "name";
+        }
+        criteriaOfFilter.put("name", req.getParameter("test-name"));
+        criteriaOfFilter.put("subject", req.getParameter("test-subject"));
+        criteriaOfFilter.put("level", req.getParameter("test-level"));
+        criteriaOfFilter.put("orderColumn", orderColumn);
+        criteriaOfFilter.put("order", req.getParameter("test-order"));
+        criteriaOfFilter.put("page", req.getParameter("page"));
+        criteriaOfFilter.put("owner", String.valueOf(req.getSession().getAttribute("id")));
+        criteriaOfFilter.entrySet().stream().filter(criteria -> criteria.getValue() == null).forEach(criteria -> criteria.setValue(""));
+        return manager.getTestManager().getFilterResultForOwner(criteriaOfFilter);
     }
 
     //Create an uri query for saving  parameters after press "next" and "prev" buttons on page

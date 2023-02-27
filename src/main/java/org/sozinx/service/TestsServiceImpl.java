@@ -4,8 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.sozinx.model.Test;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class TestsServiceImpl implements TestsService {
     private final DataBaseService manager;
     @SuppressWarnings("all")
@@ -21,14 +19,29 @@ public class TestsServiceImpl implements TestsService {
     }
 
     public double getCountOfPages(HttpServletRequest req) {
-        double count = manager.getTestManager().getAllFilterTests(req.getParameter("test-name"), req.getParameter("test-subject"),
-                req.getParameter("test-level"), req.getParameter("test-sort"), req.getParameter("test-order")) / 12;
+        Map<String, String> criteriaOfFilter = Collections.synchronizedMap(new HashMap<>());
+        criteriaOfFilter.put("name", req.getParameter("test-name"));
+        criteriaOfFilter.put("subject", req.getParameter("test-subject"));
+        criteriaOfFilter.put("level", req.getParameter("test-level"));
+        criteriaOfFilter.entrySet().stream().filter(criteria -> criteria.getValue() == null).forEach(criteria -> criteria.setValue(""));
+        double count = manager.getTestManager().getAllFilterTests(criteriaOfFilter) / 12;
         return Math.ceil(count);
     }
 
     public List<Test> getTests(HttpServletRequest req) {
-        return manager.getTestManager().getFilterResult(req.getParameter("test-name"), req.getParameter("test-subject"),
-                req.getParameter("test-level"), req.getParameter("test-sort"), req.getParameter("test-order"), req.getParameter("page"));
+        Map<String, String> criteriaOfFilter = Collections.synchronizedMap(new HashMap<>());
+        String orderColumn = req.getParameter("test-sort");
+        if(Objects.equals(orderColumn, "") || orderColumn == null){
+            orderColumn = "name";
+        }
+        criteriaOfFilter.put("name", req.getParameter("test-name"));
+        criteriaOfFilter.put("subject", req.getParameter("test-subject"));
+        criteriaOfFilter.put("level", req.getParameter("test-level"));
+        criteriaOfFilter.put("orderColumn", orderColumn);
+        criteriaOfFilter.put("order", req.getParameter("test-order"));
+        criteriaOfFilter.put("page", req.getParameter("page"));
+        criteriaOfFilter.entrySet().stream().filter(criteria -> criteria.getValue() == null).forEach(criteria -> criteria.setValue(""));
+        return manager.getTestManager().getFilterResult(criteriaOfFilter);
     }
 
     //Create an uri query for saving  parameters after press "next" and "prev" buttons on page
@@ -48,18 +61,12 @@ public class TestsServiceImpl implements TestsService {
 
     //Predict an error if one or many values is null
     private boolean isMapHasNull(Map<String, String> values) {
-        AtomicBoolean hasNull = new AtomicBoolean(false);
-        values.forEach((key, value) -> {
-            if (value == null) {
-                hasNull.set(true);
-            }
-        });
-        return hasNull.get();
+        return values.entrySet().stream().anyMatch(value -> value.getValue() == null);
     }
 
     //Save values into map for using it in method before
     private Map<String, String> valuesAddIntoMap(HttpServletRequest req) {
-        Map<String, String> values = new LinkedHashMap<>();
+        Map<String, String> values = Collections.synchronizedMap(new LinkedHashMap<>());
         values.put("&test-name=", req.getParameter("test-name"));
         values.put("&test-subject=", req.getParameter("test-subject"));
         values.put("&test-level=", req.getParameter("test-level"));
