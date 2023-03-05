@@ -1,5 +1,11 @@
 package org.sozinx.constant;
 
+/**
+ * A class with a list of errors and description for user how to fix it.
+ *
+ * @author Ostap Petruniak
+ * @since 1.0
+ */
 public class ErrorConst {
     public static final String NAME_ERROR = "Name is too short";
     public static final String EMAIL_ERROR = "Enter a correct email";

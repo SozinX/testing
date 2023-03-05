@@ -87,8 +87,8 @@ public class AnswerDAOImpl implements AnswerDAO {
 
     //changing local object Answer for updating
     private void localChangeAnswer(Answer answer, String[] params) {
-        answer.setAnswer(params[0]);
-        answer.setCorrectness(Integer.parseInt(params[1]));
+        answer.setAnswer(params[0]); //setting answer's text
+        answer.setCorrectness(Integer.parseInt(params[1])); //setting boolean for question "is answer correct?"
     }
 
     @Override

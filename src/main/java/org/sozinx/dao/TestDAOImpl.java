@@ -76,11 +76,11 @@ public class TestDAOImpl implements TestDAO {
 
     //changing local object Test for updating
     private void localChangeTest(Test test, String[] params) {
-        test.setName(params[0]);
-        test.setSubject(params[1]);
-        test.setIsClose(Integer.parseInt(params[2]));
-        test.setTime(Integer.parseInt(params[3]));
-        test.setLevel(levelManager.getLevelById(Integer.parseInt(params[4])));
+        test.setName(params[0]); //setting test's name
+        test.setSubject(params[1]); //setting test's subject
+        test.setIsClose(Integer.parseInt(params[2])); //setting value has the test been closed
+        test.setTime(Integer.parseInt(params[3])); //setting testing time
+        test.setLevel(levelManager.getLevelById(Integer.parseInt(params[4]))); //setting test's difficulty level
     }
 
     @Override
@@ -150,6 +150,10 @@ public class TestDAOImpl implements TestDAO {
 
     //creating query for filtering tests on home page
     private String getQuery(Map<String, String> criteriaOfFilter) {
+        String page = criteriaOfFilter.get("page");
+        if(Objects.equals(page, "")){
+            page = "1";
+        }
         String order = "ASC"; //initialising an order variable
         criteriaOfFilter.put("name", "%" + criteriaOfFilter.get("name") + "%"); // putting "%" on both sides for LIKE in query
         criteriaOfFilter.put("subject", "%" + criteriaOfFilter.get("subject") + "%");
@@ -163,7 +167,7 @@ public class TestDAOImpl implements TestDAO {
         }
         return String.format("SELECT * FROM test WHERE is_close = 0 AND name LIKE \"%s\" AND subject LIKE \"%s\" %s ORDER BY %s %s LIMIT %d, 12;",
                 criteriaOfFilter.get("name"), criteriaOfFilter.get("subject"), levelLine, criteriaOfFilter.get("orderColumn"), order,
-                (Integer.parseInt(criteriaOfFilter.get("page")) - 1) * 12);
+                (Integer.parseInt(page) - 1) * 12);
     }
 
     //getting filter result for query created at the last method with pagination
@@ -225,6 +229,10 @@ public class TestDAOImpl implements TestDAO {
 
     //get query for page My Test where I need to show only current user's tests
     private String getQueryForOwner(Map<String, String> criteriaOfFilter) {
+        String page = criteriaOfFilter.get("page");
+        if(Objects.equals(page, "")){
+            page = "1";
+        }
         String order = "ASC"; //initialising an order variable
         criteriaOfFilter.put("name", "%" + criteriaOfFilter.get("name") + "%"); // putting "%" on both sides for LIKE in query
         criteriaOfFilter.put("subject", "%" + criteriaOfFilter.get("subject") + "%");
@@ -238,7 +246,7 @@ public class TestDAOImpl implements TestDAO {
         }
         return String.format("SELECT * FROM test WHERE owner = %s AND name LIKE \"%s\" AND subject LIKE \"%s\" %s ORDER BY %s %s LIMIT %d, 12;",
                 criteriaOfFilter.get("owner"), criteriaOfFilter.get("name"), criteriaOfFilter.get("subject"), levelLine, criteriaOfFilter.get("orderColumn"), order,
-                (Integer.parseInt(criteriaOfFilter.get("page")) - 1) * 12);
+                (Integer.parseInt(page) - 1) * 12);
     }
 
     //using query created at the last method and getting tests for current owner

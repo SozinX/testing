@@ -31,18 +31,18 @@ public class BlockUserServiceImpl implements BlockUserService {
 
     private boolean userIsBlocked(final HttpServletRequest req) {
         List<Block> blockHistory = manager.getBlockManager().getBlockByUser(
-                manager.getUserManager().getUserByEmail(req.getParameter("blockEmail")));
+                manager.getUserManager().getUserByEmail(req.getParameter("blockEmail"))); //get records about user block history
         AtomicBoolean isBlocked = new AtomicBoolean(false);
         blockHistory.forEach(block -> {
             if (Objects.equals(block.getUnblock(), "") || block.getUnblock() == null) {
                 isBlocked.set(true);
             }
-        });
+        }); //checking every record if it is no unblock date(it means that user is in block right now)
         return isBlocked.get();
     }
 
     @Override
-    public String inputIsCorrect(final HttpServletRequest req) {
+    public String validationMessage(final HttpServletRequest req) {
         if (!emailIsCorrect(req)) {
             return EMAIL_IS_ABSENT;
         } else if (userIsBlocked(req)) {
@@ -52,7 +52,7 @@ public class BlockUserServiceImpl implements BlockUserService {
     }
 
     @Override
-    public void blockUser(HttpServletRequest req) {
+    public void insertData(HttpServletRequest req) {
         User teacher = manager.getUserManager().getUserById(Long.parseLong(req.getSession().getAttribute("id").toString()));
         User student = manager.getUserManager().getUserByEmail(req.getParameter("blockEmail"));
         manager.getBlockManager().blockUser(new Block(0, teacher, student, LocalDate.now().toString(), null));

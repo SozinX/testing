@@ -26,7 +26,7 @@ public class ViewTestServiceImpl implements ViewTestService {
     //Get test id(I've used mapping with different id in uri) from uri
     public String getTestIdFromUri(final HttpServletRequest req) {
         String uri = req.getRequestURI();
-        return uri.substring(uri.lastIndexOf("/") + 1);
+        return uri.substring(uri.lastIndexOf("/") + 1); //getting substring between the last "/" and the end of uri
     }
 
     public int getTestTime(long testId) {
@@ -37,16 +37,16 @@ public class ViewTestServiceImpl implements ViewTestService {
     public void setAttributeTest(HttpServletRequest req) {
         Test currentTest = manager.getTestManager().getTestById(Long.parseLong(getTestIdFromUri(req)));
         StringBuilder result = new StringBuilder();
-        if (req.getSession().getAttribute("id") == null) {
+        if (req.getSession().getAttribute("id") == null) { //if user is not logged in
             result.append("-");
         } else {
             User currentUser = manager.getUserManager().getUserById(Long.parseLong(String.valueOf(req.getSession().getAttribute("id"))));
             Result resultRecord = manager.getResultManager().getResultByUserAndTest(currentUser, currentTest);
             if (resultRecord != null) {
-                result.append(resultRecord.getResult());
+                result.append(resultRecord.getResult()); //adding result to string
             }
-            if (result.isEmpty()) {
-                result.append("-");
+            if (result.isEmpty()) { //if result is absent
+                result.append("-"); //adding it in string
             }
         }
         req.setAttribute("currentTest", currentTest);

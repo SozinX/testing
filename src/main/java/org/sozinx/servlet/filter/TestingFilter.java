@@ -10,7 +10,12 @@ import org.sozinx.service.*;
 import java.io.IOException;
 import java.util.Objects;
 
-
+/**
+ * This filter helping allow access only for user which passing the test on current question.
+ *
+ * @author Ostap Petruniak
+ * @since 1.0
+ */
 @WebFilter("/testing/*")
 @SuppressWarnings("unused")
 public class TestingFilter implements Filter {

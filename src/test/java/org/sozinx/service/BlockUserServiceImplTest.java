@@ -25,13 +25,13 @@ class BlockUserServiceImplTest {
 
     @Test
     void inputIsCorrectEmailIsAbsent() {
-        assertEquals("User with this email doesn't exist", service.inputIsCorrect(req));
+        assertEquals("User with this email doesn't exist", service.validationMessage(req));
     }
 
     @Test
     void inputIsCorrect() {
         when(req.getParameter("blockEmail")).thenReturn("testingtest125323734@gmail.com");
-        assertNull(service.inputIsCorrect(req));
+        assertNull(service.validationMessage(req));
     }
 
 }

@@ -37,7 +37,7 @@ public class EditQuestionServlet extends HttpServlet {
             req.setAttribute("message", validationMessage);
             doGet(req, resp);
         } else {
-            service.insertAndUpdateData(req);
+            service.insertData(req);
             resp.sendRedirect(req.getRequestURI() + "?question=" + req.getParameter("question"));
         }
     }

@@ -13,7 +13,12 @@ import org.sozinx.service.TestingServiceImpl;
 import java.io.IOException;
 import java.util.Objects;
 
-
+/**
+ * This filter helping allow access only for users which is not in test and managing cookies.
+ *
+ * @author Ostap Petruniak
+ * @since 1.0
+ */
 @WebFilter("/*")
 @SuppressWarnings("unused")
 public class MainFilter implements Filter {
@@ -34,7 +39,8 @@ public class MainFilter implements Filter {
         Object attribute = req.getSession().getAttribute("testId");
         if (attribute != null) {
             if (!Objects.equals(attribute.toString(), "") && !Objects.equals(attribute.toString(), testingService.getTestIdFromUri(req))) {
-                resp.sendRedirect("/testing/" + req.getSession().getAttribute("testId") + "?question=" + req.getSession().getAttribute("questionNumber"));
+                resp.sendRedirect("/testing/" + req.getSession().getAttribute("testId") + "?question=" +
+                        req.getSession().getAttribute("questionNumber")); //building uri to redirect in this page with parameters
                 return;
             }
         }

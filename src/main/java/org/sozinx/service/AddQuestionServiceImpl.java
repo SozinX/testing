@@ -25,40 +25,42 @@ public class AddQuestionServiceImpl implements AddQuestionService {
 
     //Check is question long present and long enough
     private static boolean questionIsValid(final HttpServletRequest req) {
-        final String question = req.getParameter("question");
-        return question != null && question.length() > 0;
+        final String question = req.getParameter("question"); //getting question from request
+        return question != null && question.length() > 0; //checking is the question long enough
     }
 
     //Check condition that in question with multiple answers must be two and more correct answers
     private static boolean multiAnswersValid(final HttpServletRequest req) {
         int countOfCorrectAnswers = 0;
-        for (int i = 1; i <= Integer.parseInt(req.getParameter("iterations")); i++) {
-            String currentCheck = req.getParameter("qt" + i);
-            if (currentCheck != null) {
-                countOfCorrectAnswers = countOfCorrectAnswers + Integer.parseInt(currentCheck);
+        for (int i = 1; i <= Integer.parseInt(req.getParameter("iterations")); i++) { //starting the loop for "iterations" input value
+            String currentCheck = req.getParameter("qt" + i); //getting value in inputs with answer's correctness
+            if (currentCheck != null) { //if inputs present
+                countOfCorrectAnswers = countOfCorrectAnswers + Integer.parseInt(currentCheck); //then add value of input to sum
+                //if correct input value is 1, if not correct - input value is 0
             }
         }
-        return countOfCorrectAnswers >= 2;
+        return countOfCorrectAnswers >= 2; //return boolean that correct answers must be higher than 1
     }
 
     //Check condition that in question with single answer must be only one correct answer
     private static boolean singleAnswerValid(final HttpServletRequest req) {
         int countOfCorrectAnswers = 0;
-        for (int i = 1; i <= Integer.parseInt(req.getParameter("iterations")); i++) {
-            String currentCheck = req.getParameter("qt" + i);
+        for (int i = 1; i <= Integer.parseInt(req.getParameter("iterations")); i++) { //starting the loop for "iterations" input value
+            String currentCheck = req.getParameter("qt" + i); //getting value in inputs with answer's correctness
             if (currentCheck != null) {
-                countOfCorrectAnswers = countOfCorrectAnswers + Integer.parseInt(currentCheck);
+                countOfCorrectAnswers = countOfCorrectAnswers + Integer.parseInt(currentCheck); //then add value of input to sum
+                //if correct input value is 1, if not correct - input value is 0
             }
         }
-        return countOfCorrectAnswers == 1;
+        return countOfCorrectAnswers == 1; //return boolean that correct answers must be equal 1
     }
 
     //Check is answer present and long enough
     private static boolean answerIsValid(final HttpServletRequest req) {
-        for (int i = 2; i <= Integer.parseInt(req.getParameter("iterations")); i++) {
-            String currentCheck = req.getParameter("a" + 1);
+        for (int i = 2; i <= Integer.parseInt(req.getParameter("iterations")); i++) { //starting the loop for "iterations" input value
+            String currentCheck = req.getParameter("a" + 1); //getting value in inputs with answer
             if (currentCheck != null) {
-                if (currentCheck.length() < 1) {
+                if (currentCheck.length() < 1) { //checking length
                     return false;
                 }
             }
@@ -70,9 +72,9 @@ public class AddQuestionServiceImpl implements AddQuestionService {
     private String inputIsValid(final HttpServletRequest req) {
         if (!questionIsValid(req)) {
             return QUESTION_ERROR;
-        } else if (!multiAnswersValid(req) && Objects.equals(req.getParameter("question-type"), "2")) {
+        } else if (!multiAnswersValid(req) && Objects.equals(req.getParameter("question-type"), "2")) { //for questions with many correct answers
             return MULTIPLY_ERROR;
-        } else if (!singleAnswerValid(req) && Objects.equals(req.getParameter("question-type"), "1")) {
+        } else if (!singleAnswerValid(req) && Objects.equals(req.getParameter("question-type"), "1")) { //for questions with one correct answer
             return SINGLE_ERROR;
         } else if (!answerIsValid(req)) {
             return ANSWER_ERROR;
@@ -101,7 +103,7 @@ public class AddQuestionServiceImpl implements AddQuestionService {
     public String validationMessage(final HttpServletRequest req) {
         String inputIsValid = inputIsValid(req);
         String isQuestionPresentInTest = isQuestionPresentInTest(req);
-        if (inputIsValid != null) {
+        if (inputIsValid != null) {//if there is an error
             return inputIsValid;
         } else return isQuestionPresentInTest;
     }
@@ -127,6 +129,7 @@ public class AddQuestionServiceImpl implements AddQuestionService {
     }
 
     //Use previous methods in one and set test closable changeable(user can open and close his test)
+    @Override
     public void insertData(final HttpServletRequest req) {
         insertAnswers(req, insertAndReturnQuestion(req));
         manager.getTestManager().openTest(manager.getTestManager().getTestById(Long.parseLong(getTestIdFromUri(req))));
@@ -136,4 +139,5 @@ public class AddQuestionServiceImpl implements AddQuestionService {
     public void setAttributeTest(HttpServletRequest req) {
         req.setAttribute("currentTest", manager.getTestManager().getTestById(Long.parseLong(getTestIdFromUri(req))));
     }
+
 }

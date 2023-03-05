@@ -40,14 +40,14 @@ public class LogInServiceImpl implements LogInService {
     }
 
     private boolean userIsBlocked(final HttpServletRequest req) {
-        List<Block> blockHistory = manager.getBlockManager().getBlockByUser(
-                manager.getUserManager().getUserByEmail(req.getParameter("email")));
+        List<Block> blockHistory = manager.getBlockManager().getBlockByUser( //2) getting block by user
+                manager.getUserManager().getUserByEmail(req.getParameter("email"))); //1) getting user by email
         AtomicBoolean isBlocked = new AtomicBoolean(false);
         blockHistory.forEach(block -> {
             if (Objects.equals(block.getUnblock(), "") || block.getUnblock() == null) {
                 isBlocked.set(true);
             }
-        });
+        }); //checking every record if it is no unblock date(it means that user is in block right now)
         return isBlocked.get();
     }
 
@@ -68,6 +68,7 @@ public class LogInServiceImpl implements LogInService {
         return checkingUser;
     }
 
+    //Creating session with all needed values about user
     @Override
     public void setAttributes(HttpServletRequest req) {
         HttpSession session = req.getSession();

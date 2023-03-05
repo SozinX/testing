@@ -27,39 +27,39 @@ public class SettingsServiceImpl implements SettingsService {
 
     //Check is name long enough
     private static boolean nameIsValid(final HttpServletRequest req) {
-        final String name = req.getParameter("set-name");
-        return name != null && name.length() > 2;
+        final String name = req.getParameter("set-name");  //getting user's name
+        return name != null && name.length() > 2; //checking is the name is long enough
     }
 
     //Compare email with his regex
     private static boolean emailIsValid(final HttpServletRequest req) {
-        final String email = req.getParameter("set-email");
+        final String email = req.getParameter("set-email"); //getting user's email
         if (email == null) {
             return false;
         }
         return Pattern.compile(EMAIL)
                 .matcher(email)
-                .matches();
+                .matches(); //checking is the email in pattern
     }
 
     //Compare two passwords. They must be equal
     private static boolean passwordsMatch(final HttpServletRequest req) {
-        final String password = req.getParameter("new-password");
+        final String password = req.getParameter("new-password"); //getting user's new password
         if (password != null) {
-            return password.equals(req.getParameter("confirm-password"));
+            return password.equals(req.getParameter("confirm-password")); //checking is new password equals confirm password
         }
         return true;
     }
 
     //Compare password with his regex
     private static boolean passwordIsValid(final HttpServletRequest req) {
-        final String password = req.getParameter("new-password");
+        final String password = req.getParameter("new-password"); //getting new password
         if (password == null) {
             return false;
         }
         return Pattern.compile(PASSWORD)
                 .matcher(password)
-                .matches();
+                .matches(); //checking is the password in pattern
     }
 
     //Sum all validation method in one and get error messages
@@ -80,13 +80,14 @@ public class SettingsServiceImpl implements SettingsService {
     private String isEmailPresentInDataBase(final HttpServletRequest req) {
         String email = req.getParameter("set-email");
         if (manager.getUserManager().getUserByEmail(email) == null || Objects.equals(req.getSession().getAttribute("email").toString(), email)) {
-            return null;
+            return null; //if email is not in database or if email is the same that was, then everything is ok
         } else {
             return EMAIL_IS_PRESENT;
         }
     }
 
     //Get validation message
+    @Override
     public String validationMessage(final HttpServletRequest req) {
         String inputIsValid = inputIsValid(req);
         String isEmailPresentInDataBase = isEmailPresentInDataBase(req);
@@ -104,12 +105,15 @@ public class SettingsServiceImpl implements SettingsService {
         return new String[]{name, email, role, password};
     }
 
-    public void editData(final HttpServletRequest req) {
+    //Editing data about user in database
+    @Override
+    public void insertData(final HttpServletRequest req) {
         String[] parameters = getParameters(req);
-        User user = manager.getUserManager().getUserById(Long.parseLong(req.getSession().getAttribute("id").toString()));
-        if (parameters[3] == null || parameters[3].equals("")) {
-            parameters[3] = user.getPassword();
+        User user = manager.getUserManager().getUserById(Long.parseLong(req.getSession().getAttribute("id").toString())); //getting user by id from session
+        if (parameters[3] == null || parameters[3].equals("")) { //if password is not present
+            parameters[3] = user.getPassword(); //setting old password
         }
+        //password inputs are clear by default, so we need to check it before updating
         manager.getUserManager().updateUser(user, parameters);
         setUserAttributes(req, parameters);
     }
