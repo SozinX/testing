@@ -36,7 +36,7 @@ public class SettingsServlet extends HttpServlet {
             req.setAttribute("message", validationMessage);
             doGet(req, resp);
         } else {
-            service.editData(req);
+            service.insertData(req);
             resp.sendRedirect("/settings");
         }
     }

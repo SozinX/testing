@@ -1,10 +1,12 @@
 package org.sozinx.service;
 
-import jakarta.servlet.http.HttpServletRequest;
+/**
+ * Service using in SignUpServlet and give all function that servlet need.
+ *
+ * @author Ostap Petruniak
+ * @see org.sozinx.servlet.servlet.SignUpServlet
+ * @since 1.0
+ */
+public interface SignUpService extends DataManipulationsService {
 
-
-public interface SignUpService {
-    String validationMessage(final HttpServletRequest req);
-
-    void insertData(final HttpServletRequest req);
 }

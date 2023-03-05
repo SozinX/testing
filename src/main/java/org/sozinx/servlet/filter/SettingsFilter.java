@@ -8,6 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * This filter helping allow access only for authorised user in Settings page.
+ *
+ * @author Ostap Petruniak
+ * @since 1.0
+ */
 @WebFilter("/settings")
 @SuppressWarnings("unused")
 public class SettingsFilter implements Filter {

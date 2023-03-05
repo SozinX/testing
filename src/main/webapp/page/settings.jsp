@@ -34,10 +34,10 @@
                               <br />
                           </c:when>
                           <c:when test="${sessionScope.role == 'Student'}">
-
-                              <option value="1" selected><fmt:message key="SettingsStudent" /></option>
-                              <option value="2"><fmt:message key="SettingsTeacher" /></option>
-
+                                <select name="set-role" class="custom-select" id="inputGroupSelect01">
+                                      <option value="1" selected><fmt:message key="SettingsStudent" /></option>
+                                      <option value="2"><fmt:message key="SettingsTeacher" /></option>
+                                </select>
                           </c:when>
                             <c:otherwise>
                                 <select name="set-role" class="custom-select" id="inputGroupSelect01">

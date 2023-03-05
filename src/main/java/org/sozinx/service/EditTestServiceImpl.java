@@ -24,25 +24,25 @@ public class EditTestServiceImpl implements EditTestService {
 
     //Check is name long enough
     private static boolean nameIsValid(final HttpServletRequest req) {
-        final String name = req.getParameter("test-name");
-        return name != null && name.length() > 2;
+        final String name = req.getParameter("test-name"); //getting test's name from request
+        return name != null && name.length() > 2; //checking is the name long enough
     }
 
     //Check is subject long enough
     private static boolean subjectIsValid(final HttpServletRequest req) {
-        final String subject = req.getParameter("test-subject");
-        return subject != null && subject.length() > 2;
+        final String subject = req.getParameter("test-subject"); //getting test's subject from request
+        return subject != null && subject.length() > 2; //checking is the subject long enough
     }
 
     //Check comparison between time and his regex
     private static boolean timeIsValid(final HttpServletRequest req) {
-        final String time = req.getParameter("test-time");
+        final String time = req.getParameter("test-time");  //getting test's time from request
         if (time == null) {
             return false;
         }
         return Pattern.compile(TIME)
                 .matcher(time)
-                .matches();
+                .matches(); // checking this time in pattern(only natural numbers)
     }
 
     //Sum all methods of validation before and return error or null
@@ -60,13 +60,14 @@ public class EditTestServiceImpl implements EditTestService {
     //Get test id(I've used mapping with different id in uri) from uri
     private String getTestIdFromUri(final HttpServletRequest req) {
         String uri = req.getRequestURI();
-        return uri.substring(uri.lastIndexOf("/") + 1);
+        return uri.substring(uri.lastIndexOf("/") + 1); // getting substring between the last "/" and the end of uri
     }
 
     //Check is name already used by this user
     private String isNamePresentInDataBase(final HttpServletRequest req) {
         String name = req.getParameter("test-name");
-        if (manager.getTestManager().getTestByNameAndOwner(name, Long.parseLong(String.valueOf(req.getSession().getAttribute("id"))),
+        if (manager.getTestManager().getTestByNameAndOwner(name, //test name
+                Long.parseLong(String.valueOf(req.getSession().getAttribute("id"))), //getting owner from session
                 Long.parseLong(getTestIdFromUri(req))) == null) {
             return null;
         } else {
@@ -83,7 +84,7 @@ public class EditTestServiceImpl implements EditTestService {
         } else return isEmailPresentInDataBase;
     }
 
-    public void editData(final HttpServletRequest req) {
+    public void insertData(final HttpServletRequest req) {
         final String name = req.getParameter("test-name");
         final String subject = req.getParameter("test-subject");
         final String time = String.valueOf(req.getParameter("test-time"));

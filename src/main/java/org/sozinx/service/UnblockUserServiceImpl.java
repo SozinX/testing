@@ -33,19 +33,19 @@ public class UnblockUserServiceImpl implements UnblockUserService {
 
     private boolean userIsBlocked(final HttpServletRequest req) {
         List<Block> blockHistory = manager.getBlockManager().getBlockByUser(
-                manager.getUserManager().getUserByEmail(req.getParameter("unblockEmail")));
+                manager.getUserManager().getUserByEmail(req.getParameter("unblockEmail"))); //get records about user block history
         AtomicBoolean isBlocked = new AtomicBoolean(false);
         blockHistory.forEach(block -> {
             if (Objects.equals(block.getUnblock(), "") || block.getUnblock() == null) {
                 isBlocked.set(true);
             }
             blockRecord = block;
-        });
+        }); //checking every record if it is unblocked date(it means that user is in unblock right now)
         return isBlocked.get();
     }
 
     @Override
-    public String inputIsCorrect(final HttpServletRequest req) {
+    public String validationMessage(final HttpServletRequest req) {
         if (!emailIsCorrect(req)) {
             return EMAIL_IS_ABSENT;
         } else if (!userIsBlocked(req)) {
@@ -55,7 +55,7 @@ public class UnblockUserServiceImpl implements UnblockUserService {
     }
 
     @Override
-    public void unblockUser(HttpServletRequest req) {
+    public void insertData(HttpServletRequest req) {
         manager.getBlockManager().unblockUser(blockRecord, LocalDate.now().toString());
     }
 }

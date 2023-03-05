@@ -11,7 +11,12 @@ import org.sozinx.service.ResultServiceImpl;
 import java.io.IOException;
 import java.util.Objects;
 
-
+/**
+ * This filter helping allow access only for user which finishing the test.
+ *
+ * @author Ostap Petruniak
+ * @since 1.0
+ */
 @WebFilter("/result/*")
 @SuppressWarnings("unused")
 public class ResultFilter implements Filter {

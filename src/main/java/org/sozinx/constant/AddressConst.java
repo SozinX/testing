@@ -1,5 +1,12 @@
 package org.sozinx.constant;
 
+/**
+ * A class with a list of the path to the corresponding pages.
+ *
+ * @author Ostap Petruniak
+ * @since 1.0
+ */
+
 public class AddressConst {
     public static final String HOME_PAGE = "/page/index.jsp";
     public static final String LOG_IN_PAGE = "/page/login.jsp";

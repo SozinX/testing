@@ -1,9 +1,11 @@
 package org.sozinx.service;
 
-import jakarta.servlet.http.HttpServletRequest;
-
-public interface UnblockUserService {
-    String inputIsCorrect(final HttpServletRequest req);
-
-    void unblockUser(HttpServletRequest req);
+/**
+ * Service using in UnblockServlet and give all function that servlet need.
+ *
+ * @author Ostap Petruniak
+ * @see org.sozinx.servlet.servlet.UnblockServlet
+ * @since 1.0
+ */
+public interface UnblockUserService extends DataManipulationsService {
 }

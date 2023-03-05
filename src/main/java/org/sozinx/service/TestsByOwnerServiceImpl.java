@@ -3,10 +3,7 @@ package org.sozinx.service;
 import jakarta.servlet.http.HttpServletRequest;
 import org.sozinx.model.Test;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TestsByOwnerServiceImpl implements TestsByOwnerService {
@@ -24,24 +21,50 @@ public class TestsByOwnerServiceImpl implements TestsByOwnerService {
     }
 
     public double getCountOfPagesByOwner(HttpServletRequest req) {
-        double count = manager.getTestManager().getAllFilterTestsForOwner(req.getParameter("test-name"), req.getParameter("test-subject"),
-                req.getParameter("test-level"), req.getParameter("test-sort"), String.valueOf(req.getSession().getAttribute("id")), req.getParameter("test-order")) / 12;
+        Map<String, String> criteriaOfFilter = Collections.synchronizedMap(new HashMap<>());
+        criteriaOfFilter.put("name", req.getParameter("test-name"));
+        criteriaOfFilter.put("subject", req.getParameter("test-subject"));
+        criteriaOfFilter.put("level", req.getParameter("test-level"));
+        criteriaOfFilter.put("owner", String.valueOf(req.getSession().getAttribute("id")));
+        criteriaOfFilter.entrySet().stream().filter(criteria -> criteria.getValue() == null).
+                forEach(criteria -> criteria.setValue("")); //if value null set "" in this value
+        double count = manager.getTestManager().getAllFilterTestsForOwner(criteriaOfFilter) / 12; //12 tests on one page
         return Math.ceil(count);
     }
 
-    public List<Test> getTestsByOwner(HttpServletRequest req) {
-        return manager.getTestManager().getFilterResultForOwner(req.getParameter("test-name"), req.getParameter("test-subject"),
-                req.getParameter("test-level"), req.getParameter("test-sort"), req.getParameter("test-order"), String.valueOf(req.getSession().getAttribute("id")), req.getParameter("page"));
+    //Building map for filtering in DAO class. More easy way to manage this process
+    private Map<String, String> getFilterParameters(HttpServletRequest req) {
+        Map<String, String> criteriaOfFilter = Collections.synchronizedMap(new HashMap<>());
+        String orderColumn = req.getParameter("test-sort");
+        if (Objects.equals(orderColumn, "") || orderColumn == null) { //predict first load error
+            orderColumn = "name";
+        }
+        criteriaOfFilter.put("name", req.getParameter("test-name"));
+        criteriaOfFilter.put("subject", req.getParameter("test-subject"));
+        criteriaOfFilter.put("level", req.getParameter("test-level"));
+        criteriaOfFilter.put("orderColumn", orderColumn);
+        criteriaOfFilter.put("order", req.getParameter("test-order"));
+        criteriaOfFilter.put("page", req.getParameter("page"));
+        criteriaOfFilter.put("owner", String.valueOf(req.getSession().getAttribute("id")));
+        return criteriaOfFilter;
     }
 
-    //Create an uri query for saving  parameters after press "next" and "prev" buttons on page
+    //Sending to DAO map and getting results
+    public List<Test> getTestsByOwner(HttpServletRequest req) {
+        Map<String, String> criteriaOfFilter = getFilterParameters(req);
+        criteriaOfFilter.entrySet().stream().filter(criteria -> criteria.getValue() == null).
+                forEach(criteria -> criteria.setValue("")); //if value null set "" in this value
+        return manager.getTestManager().getFilterResultForOwner(criteriaOfFilter);
+    }
+
+    //Create an uri query for saving parameters after press "next" and "prev" buttons on page
     private StringBuilder getAddress(HttpServletRequest req) {
         StringBuilder getQuery = new StringBuilder();
         Map<String, String> values = valuesAddIntoMap(req);
         if (!isMapHasNull(values)) {
             values.forEach((key, value) -> {
                 getQuery.append(key);
-                if (!Objects.equals(value, "0")) {
+                if (!Objects.equals(value, "0")) { //predict default values in some lists
                     getQuery.append(value);
                 }
             });

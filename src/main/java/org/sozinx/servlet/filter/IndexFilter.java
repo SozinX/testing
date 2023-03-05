@@ -8,7 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-
+/**
+ * This filter helping allow access only for uri with parameter in index page.
+ *
+ * @author Ostap Petruniak
+ * @since 1.0
+ */
 @WebFilter("/")
 @SuppressWarnings("unused")
 public class IndexFilter implements Filter {

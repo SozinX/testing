@@ -46,15 +46,15 @@ public class QuestionDAOImpl implements QuestionDAO {
         return question;
     }
 
-    public Question getQuestionByName(String name, long test, long id) {
+    public Question getQuestionByName(String name, long testId, long questionId) {
         Question question = null;
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
             PreparedStatement statement = connection.prepareStatement(GET_QUESTION_BY_QUESTION);
             statement.setString(1, name);
-            statement.setLong(2, test);
-            statement.setLong(3, id);
+            statement.setLong(2, testId);
+            statement.setLong(3, questionId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 question = new Question(resultSet.getInt("id"), resultSet.getString("question"),
@@ -132,8 +132,8 @@ public class QuestionDAOImpl implements QuestionDAO {
 
     //changing local object Question for updating
     private void localChangeQuestion(Question question, String[] params) {
-        question.setQuestion(params[0]);
-        question.setType(typeManager.getTypeById(Integer.parseInt(params[1])));
+        question.setQuestion(params[0]); //setting question's text
+        question.setType(typeManager.getTypeById(Integer.parseInt(params[1]))); //setting question's type(with one or many correct answers)
     }
 
     @Override

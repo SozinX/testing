@@ -30,12 +30,12 @@ public class BlockServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        String inputValid = service.inputIsCorrect(req);
+        String inputValid = service.validationMessage(req);
         if (inputValid != null) {
             req.setAttribute("message", inputValid);
             doGet(req, resp);
         } else {
-            service.blockUser(req);
+            service.insertData(req);
             resp.sendRedirect("/block");
         }
     }

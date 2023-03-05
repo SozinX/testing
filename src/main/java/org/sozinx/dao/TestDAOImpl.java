@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static org.sozinx.constant.QueryConst.*;
@@ -75,11 +76,11 @@ public class TestDAOImpl implements TestDAO {
 
     //changing local object Test for updating
     private void localChangeTest(Test test, String[] params) {
-        test.setName(params[0]);
-        test.setSubject(params[1]);
-        test.setIsClose(Integer.parseInt(params[2]));
-        test.setTime(Integer.parseInt(params[3]));
-        test.setLevel(levelManager.getLevelById(Integer.parseInt(params[4])));
+        test.setName(params[0]); //setting test's name
+        test.setSubject(params[1]); //setting test's subject
+        test.setIsClose(Integer.parseInt(params[2])); //setting value has the test been closed
+        test.setTime(Integer.parseInt(params[3])); //setting testing time
+        test.setLevel(levelManager.getLevelById(Integer.parseInt(params[4]))); //setting test's difficulty level
     }
 
     @Override
@@ -148,48 +149,35 @@ public class TestDAOImpl implements TestDAO {
     }
 
     //creating query for filtering tests on home page
-    private String getQuery(String name, String subject, String level, String orderColumn, String order, String page) {
-        if (page == null) {
+    private String getQuery(Map<String, String> criteriaOfFilter) {
+        String page = criteriaOfFilter.get("page");
+        if(Objects.equals(page, "")){
             page = "1";
         }
-        int records = (Integer.parseInt(page) - 1) * 12;
-        if (name == null && subject == null && orderColumn == null && level == null && order == null) {
-            return "SELECT * FROM test WHERE is_close = 0 ORDER BY name ASC LIMIT " + records + ", 12;";
-        } else {
-            StringBuilder startString = new StringBuilder("SELECT * FROM test ");
-            String orderString = "ORDER BY " + orderColumn + " ASC ";
-            if (Objects.equals(order, "0")) {
-                orderString = "ORDER BY " + orderColumn + " DESC ";
-            }
-            if (Objects.equals(name, null) && Objects.equals(subject, null) && Objects.equals(level, "0")) {
-                return startString + "WHERE is_close = 0 " + orderString;
-            }
-            startString.append("WHERE is_close = 0 ");
-            if (!Objects.equals(name, null)) {
-                startString.append("AND name LIKE '%").append(name).append("%' ");
-            }
-            if (!Objects.equals(subject, null) && startString.length() > 30) {
-                startString.append("AND subject LIKE '%").append(subject).append("%' ");
-            } else if (!Objects.equals(subject, "") && startString.length() < 30) {
-                startString.append("subject LIKE '%").append(subject).append("%' ");
-            }
-            if (!Objects.equals(level, "0") && !Objects.equals(level, "") && startString.length() > 30) {
-                startString.append("AND level = ").append(level).append(" ");
-            } else if (!Objects.equals(level, "0") && startString.length() < 30) {
-                startString.append("level = ").append(level).append(" ");
-            }
-            return startString + orderString + "LIMIT " + records + ", 12;";
+        String order = "ASC"; //initialising an order variable
+        criteriaOfFilter.put("name", "%" + criteriaOfFilter.get("name") + "%"); // putting "%" on both sides for LIKE in query
+        criteriaOfFilter.put("subject", "%" + criteriaOfFilter.get("subject") + "%");
+        if (Objects.equals(criteriaOfFilter.get("order"), "0")) { //checking if order from initialisation is not correct
+            order = "DESC"; //then change it
         }
+        String levelLine = ""; //initialising a level line which will insert in String.format()...
+        String level = criteriaOfFilter.get("level"); //initialising a level variable
+        if (!Objects.equals(level, "") && !Objects.equals(level, "0")) { //checking if level was set by user
+            levelLine = "AND level = " + level + " "; //then change this line
+        }
+        return String.format("SELECT * FROM test WHERE is_close = 0 AND name LIKE \"%s\" AND subject LIKE \"%s\" %s ORDER BY %s %s LIMIT %d, 12;",
+                criteriaOfFilter.get("name"), criteriaOfFilter.get("subject"), levelLine, criteriaOfFilter.get("orderColumn"), order,
+                (Integer.parseInt(page) - 1) * 12);
     }
 
     //getting filter result for query created at the last method with pagination
     @Override
-    public List<Test> getFilterResult(String name, String subject, String level, String orderColumn, String order, String page) {
+    public List<Test> getFilterResult(Map<String, String> criteriaOfFilter) {
         List<Test> tests = new ArrayList<>();
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
-            PreparedStatement statement = connection.prepareStatement(getQuery(name, subject, level, orderColumn, order, page));
+            PreparedStatement statement = connection.prepareStatement(getQuery(criteriaOfFilter));
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 tests.add(new Test(resultSet.getInt("id"), resultSet.getString("name"),
@@ -207,44 +195,26 @@ public class TestDAOImpl implements TestDAO {
     }
 
     //query for getting all filter results for knowledge about number of pages(Calculating  is services)
-    private String getAllFilterRecordsQuery(String name, String subject, String level, String orderColumn, String order) {
-        if (name == null && subject == null && orderColumn == null && level == null && order == null) {
-            return "SELECT COUNT(*) AS count FROM test WHERE is_close = 0 ORDER BY name ASC;";
-        } else {
-            StringBuilder startString = new StringBuilder("SELECT COUNT(*) AS count FROM test ");
-            String orderString = "ORDER BY " + orderColumn + " ASC ";
-            if (Objects.equals(order, "0")) {
-                orderString = "ORDER BY " + orderColumn + " DESC ";
-            }
-            if (Objects.equals(name, null) && Objects.equals(subject, null) && Objects.equals(level, "0")) {
-                return startString + "WHERE is_close = 0 " + orderString;
-            }
-            startString.append("WHERE is_close = 0 ");
-            if (!Objects.equals(name, null)) {
-                startString.append("AND name LIKE '%").append(name).append("%' ");
-            }
-            if (!Objects.equals(subject, null) && startString.length() > 30) {
-                startString.append("AND subject LIKE '%").append(subject).append("%' ");
-            } else if (!Objects.equals(subject, "") && startString.length() < 30) {
-                startString.append("subject LIKE '%").append(subject).append("%' ");
-            }
-            if (!Objects.equals(level, "0") && !Objects.equals(level, "") && startString.length() > 30) {
-                startString.append("AND level = ").append(level).append(" ");
-            } else if (!Objects.equals(level, "0") && startString.length() < 30) {
-                startString.append("level = ").append(level).append(" ");
-            }
-            return startString + orderString;
+    private String getAllFilterRecordsQuery(Map<String, String> criteriaOfFilter) {
+        criteriaOfFilter.put("name", "%" + criteriaOfFilter.get("name") + "%"); // putting "%" on both sides for LIKE in query
+        criteriaOfFilter.put("subject", "%" + criteriaOfFilter.get("subject") + "%");
+        String levelLine = ""; //initialising a level line which will insert in String.format()...
+        String level = criteriaOfFilter.get("level"); //initialising a level variable
+        if (!Objects.equals(level, "") && !Objects.equals(level, "0")) { //checking if level was set by user
+            levelLine = "AND level = " + level + " "; //then change this line
         }
+        return String.format("SELECT COUNT(*) AS count FROM test WHERE is_close = 0 AND name LIKE \"%s\" AND subject LIKE \"%s\" %s;",
+                criteriaOfFilter.get("name"), criteriaOfFilter.get("subject"), levelLine);
     }
 
     //using created at the previous method query and return number of tests
     @Override
-    public double getAllFilterTests(String name, String subject, String level, String orderColumn, String order) {
+    public double getAllFilterTests(Map<String, String> criteriaOfFilter) {
         int numberOfTests = 0;
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
-            PreparedStatement statement = connection.prepareStatement(getAllFilterRecordsQuery(name, subject, level, orderColumn, order));
+            PreparedStatement statement = connection.prepareStatement(getAllFilterRecordsQuery(criteriaOfFilter));
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 numberOfTests = Integer.parseInt(resultSet.getString("count"));
@@ -258,48 +228,35 @@ public class TestDAOImpl implements TestDAO {
     }
 
     //get query for page My Test where I need to show only current user's tests
-    private String getQueryForOwner(String name, String subject, String level, String orderColumn, String order, String owner, String page) {
-        if (page == null) {
+    private String getQueryForOwner(Map<String, String> criteriaOfFilter) {
+        String page = criteriaOfFilter.get("page");
+        if(Objects.equals(page, "")){
             page = "1";
         }
-        int records = (Integer.parseInt(page) - 1) * 12;
-        if (name == null && subject == null && orderColumn == null && level == null && order == null) {
-            return "SELECT * FROM test WHERE owner = " + owner + " ORDER BY name ASC LIMIT " + records + ", 12;";
-        } else {
-            StringBuilder startString = new StringBuilder("SELECT * FROM test ");
-            String orderString = "ORDER BY " + orderColumn + " ASC ";
-            if (Objects.equals(order, "0")) {
-                orderString = "ORDER BY " + orderColumn + " DESC ";
-            }
-            if (Objects.equals(name, null) && Objects.equals(subject, null) && Objects.equals(level, "0")) {
-                return startString + "WHERE owner = " + owner + " " + orderString;
-            }
-            startString.append("WHERE owner =").append(owner).append(" ");
-            if (!Objects.equals(name, null)) {
-                startString.append("AND name LIKE '%").append(name).append("%' ");
-            }
-            if (!Objects.equals(subject, null) && startString.length() > 30) {
-                startString.append("AND subject LIKE '%").append(subject).append("%' ");
-            } else if (!Objects.equals(subject, "") && startString.length() < 30) {
-                startString.append("subject LIKE '%").append(subject).append("%' ");
-            }
-            if (!Objects.equals(level, "0") && !Objects.equals(level, "") && startString.length() > 30) {
-                startString.append("AND level = ").append(level).append(" ");
-            } else if (!Objects.equals(level, "0") && startString.length() < 30) {
-                startString.append("level = ").append(level).append(" ");
-            }
-            return startString + orderString + "LIMIT " + records + ", 12;";
+        String order = "ASC"; //initialising an order variable
+        criteriaOfFilter.put("name", "%" + criteriaOfFilter.get("name") + "%"); // putting "%" on both sides for LIKE in query
+        criteriaOfFilter.put("subject", "%" + criteriaOfFilter.get("subject") + "%");
+        if (Objects.equals(criteriaOfFilter.get("order"), "0")) { //checking if order from initialisation is not correct
+            order = "DESC"; //then change it
         }
+        String levelLine = ""; //initialising a level line which will insert in String.format()...
+        String level = criteriaOfFilter.get("level"); //initialising a level variable
+        if (!Objects.equals(level, "") && !Objects.equals(level, "0")) { //checking if level was set by user
+            levelLine = "AND level = " + level + " "; //then change this line
+        }
+        return String.format("SELECT * FROM test WHERE owner = %s AND name LIKE \"%s\" AND subject LIKE \"%s\" %s ORDER BY %s %s LIMIT %d, 12;",
+                criteriaOfFilter.get("owner"), criteriaOfFilter.get("name"), criteriaOfFilter.get("subject"), levelLine, criteriaOfFilter.get("orderColumn"), order,
+                (Integer.parseInt(page) - 1) * 12);
     }
 
     //using query created at the last method and getting tests for current owner
     @Override
-    public List<Test> getFilterResultForOwner(String name, String subject, String level, String orderColumn, String order, String owner, String page) {
+    public List<Test> getFilterResultForOwner(Map<String, String> criteriaOfFilter) {
         List<Test> tests = new ArrayList<>();
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
-            PreparedStatement statement = connection.prepareStatement(getQueryForOwner(name, subject, level, orderColumn, order, owner, page));
+            PreparedStatement statement = connection.prepareStatement(getQueryForOwner(criteriaOfFilter));
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 tests.add(new Test(resultSet.getInt("id"), resultSet.getString("name"),
@@ -317,44 +274,26 @@ public class TestDAOImpl implements TestDAO {
     }
 
     //query for getting all filter results for knowledge about number of pages(calculating in services)
-    private String getAllFilterRecordsQueryForOwner(String name, String subject, String level, String orderColumn, String owner, String order) {
-        if (name == null && subject == null && orderColumn == null && level == null && order == null) {
-            return "SELECT COUNT(*) AS count FROM test WHERE owner = " + owner + " ORDER BY name ASC;";
-        } else {
-            StringBuilder startString = new StringBuilder("SELECT COUNT(*) AS count FROM test ");
-            String orderString = "ORDER BY " + orderColumn + " ASC ";
-            if (Objects.equals(order, "0")) {
-                orderString = "ORDER BY " + orderColumn + " DESC ";
-            }
-            if (Objects.equals(name, null) && Objects.equals(subject, null) && Objects.equals(level, "0")) {
-                return startString + "WHERE owner = " + owner + " " + orderString;
-            }
-            startString.append("WHERE owner =").append(owner).append(" ");
-            if (!Objects.equals(name, null)) {
-                startString.append("AND name LIKE '%").append(name).append("%' ");
-            }
-            if (!Objects.equals(subject, null) && startString.length() > 30) {
-                startString.append("AND subject LIKE '%").append(subject).append("%' ");
-            } else if (!Objects.equals(subject, "") && startString.length() < 30) {
-                startString.append("subject LIKE '%").append(subject).append("%' ");
-            }
-            if (!Objects.equals(level, "0") && !Objects.equals(level, "") && startString.length() > 30) {
-                startString.append("AND level = ").append(level).append(" ");
-            } else if (!Objects.equals(level, "0") && startString.length() < 30) {
-                startString.append("level = ").append(level).append(" ");
-            }
-            return startString + orderString;
+    private String getAllFilterRecordsQueryForOwner(Map<String, String> criteriaOfFilter) {
+        criteriaOfFilter.put("name", "%" + criteriaOfFilter.get("name") + "%"); // putting "%" on both sides for LIKE in query
+        criteriaOfFilter.put("subject", "%" + criteriaOfFilter.get("subject") + "%");
+        String levelLine = ""; //initialising a level line which will insert in String.format()...
+        String level = criteriaOfFilter.get("level"); //initialising a level variable
+        if (!Objects.equals(level, "") && !Objects.equals(level, "0")) { //checking if level was set by user
+            levelLine = "AND level = " + level + " "; //then change this line
         }
+        return String.format("SELECT COUNT(*) AS count FROM test WHERE owner = %s AND name LIKE \"%s\" AND subject LIKE \"%s\" %s;",
+                criteriaOfFilter.get("owner"), criteriaOfFilter.get("name"), criteriaOfFilter.get("subject"), levelLine);
     }
 
     //using created at the previous method query and return number of tests for current owner
     @Override
-    public double getAllFilterTestsForOwner(String name, String subject, String level, String orderColumn, String owner, String order) {
+    public double getAllFilterTestsForOwner(Map<String, String> criteriaOfFilter) {
         int numbersOfTests = 0;
         Connection connection = ConnectionService.getConnection();
         try {
             assert connection != null;
-            PreparedStatement statement = connection.prepareStatement(getAllFilterRecordsQueryForOwner(name, subject, level, orderColumn, owner, order));
+            PreparedStatement statement = connection.prepareStatement(getAllFilterRecordsQueryForOwner(criteriaOfFilter));
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 numbersOfTests = Integer.parseInt(resultSet.getString("count"));

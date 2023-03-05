@@ -23,18 +23,20 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public String getTestIdFromUri(final HttpServletRequest req) {
         String uri = req.getRequestURI();
-        return uri.substring(uri.lastIndexOf("/") + 1);
+        return uri.substring(uri.lastIndexOf("/") + 1); // getting substring between the last "/" and the end of uri
     }
 
     @Override
     public void countResult(HttpServletRequest req) {
         Test test = manager.getTestManager().getTestById(Long.parseLong(String.valueOf(req.getSession().getAttribute("testId"))));
         User user = manager.getUserManager().getUserById(Long.parseLong(String.valueOf(req.getSession().getAttribute("id"))));
-        manager.getTestManager().addPopularity(test);
-        int sumOfCorrectAnswers = manager.getLogManager().getSumOfPoints(test, user);
-        int countOfAnswers = manager.getAnswerManager().getCountOfAnswers(test);
-        int countOfZeros = manager.getLogManager().getCountOfZeros(test, user);
-        manager.getResultManager().addResult(new Result(0, LocalDate.now().toString(), 100 * sumOfCorrectAnswers / (countOfAnswers + countOfZeros), user, test));
+        manager.getTestManager().addPopularity(test); //adding test popularity after finishing him
+        int sumOfCorrectAnswers = manager.getLogManager().getSumOfPoints(test, user); //returning count of correct answers
+        int countOfAnswers = manager.getAnswerManager().getCountOfAnswers(test); //returning count of all correct answer that could be in the test
+        int countOfZeros = manager.getLogManager().getCountOfZeros(test, user); //returning incorrect answers
+        manager.getResultManager().addResult(new Result(0, LocalDate.now().toString(),
+                100 * sumOfCorrectAnswers / (countOfAnswers + countOfZeros), // 100% * correct answers / (incorrect answers + all answers)
+                user, test));
     }
 
 }

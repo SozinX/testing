@@ -8,7 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-
+/**
+ * This filter helping allow access only for NOT authorised user in Log In page.
+ *
+ * @author Ostap Petruniak
+ * @since 1.0
+ */
 @WebFilter("/login")
 @SuppressWarnings("unused")
 public class LogInFilter implements Filter {

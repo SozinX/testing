@@ -27,25 +27,25 @@ public class AddTestServiceImpl implements AddTestService {
 
     //Check is name long enough
     private static boolean nameIsValid(final HttpServletRequest req) {
-        final String name = req.getParameter("test-name");
-        return name != null && name.length() > 2;
+        final String name = req.getParameter("test-name"); //getting test's name from request
+        return name != null && name.length() > 2; //checking is the name long enough
     }
 
     //Check is subject long enough
     private static boolean subjectIsValid(final HttpServletRequest req) {
-        final String subject = req.getParameter("test-subject");
-        return subject != null && subject.length() > 2;
+        final String subject = req.getParameter("test-subject"); //getting test's subject from request
+        return subject != null && subject.length() > 2; //checking is the subject long enough
     }
 
     //Check comparison between time and his regex
     private static boolean timeIsValid(final HttpServletRequest req) {
-        final String time = req.getParameter("test-time");
+        final String time = req.getParameter("test-time"); //getting test's time from request
         if (time == null) {
             return false;
         }
         return Pattern.compile(TIME)
                 .matcher(time)
-                .matches();
+                .matches(); // checking this time in pattern(only natural numbers)
     }
 
     //Sum all methods of validation before and return error or null
@@ -63,7 +63,9 @@ public class AddTestServiceImpl implements AddTestService {
     //Check is name already used by this user
     private String isNamePresentInDataBase(final HttpServletRequest req) {
         String name = req.getParameter("test-name");
-        if (manager.getTestManager().getTestByNameAndOwner(name, Long.parseLong(String.valueOf(req.getSession().getAttribute("id"))), 0) == null) {
+        if (manager.getTestManager().getTestByNameAndOwner(name, //test name
+                Long.parseLong(String.valueOf(req.getSession().getAttribute("id"))), //getting owner from session
+                0) == null) {
             return null;
         } else {
             return TEST_NAME_IS_PRESENT;
@@ -71,6 +73,7 @@ public class AddTestServiceImpl implements AddTestService {
     }
 
     //Get validation message
+    @Override
     public String validationMessage(final HttpServletRequest req) {
         String inputIsValid = inputIsValid(req);
         String isEmailPresentInDataBase = isNamePresentInDataBase(req);
@@ -80,6 +83,7 @@ public class AddTestServiceImpl implements AddTestService {
     }
 
     //Insert data into database
+    @Override
     public void insertData(final HttpServletRequest req) {
         final String name = req.getParameter("test-name");
         final String subject = req.getParameter("test-subject");
